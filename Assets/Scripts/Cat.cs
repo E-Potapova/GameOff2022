@@ -16,6 +16,8 @@ public class Cat : MonoBehaviour
     //get Boxclider
     private BoxCollider2D catCollider;
 
+    public Transform whiskers;
+
     #endregion
 
     // Start is called before the first frame update
@@ -48,9 +50,7 @@ public class Cat : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) {
         Debug.Log( "collided ");
-        this.foward = !foward;
+        //this.foward = !foward;
     }
   
-
-
 }
