@@ -48,9 +48,18 @@ public class Cat : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D other) {
-        Debug.Log( "collided ");
-        //this.foward = !foward;
+    // private void OnCollisionEnter2D(Collision2D other) {
+    //     Debug.Log( "collided ");
+    //     //this.foward = !foward;
+    // }
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        Debug.Log("Trigger");
+        this.foward = !this.foward;
+
+        //flip transform and collider
+        Debug.Log(whiskers.localPosition);
+        whiskers.localPosition = -whiskers.localPosition;
     }
   
 }
