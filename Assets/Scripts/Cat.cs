@@ -34,24 +34,24 @@ public class Cat : MonoBehaviour
     {
         //move cat in straight line until hit wall
         //movethis to a fixed update so its frame rate independent
-        Move(moveSpeed, foward);
+        //Move(moveSpeed, foward);
 
         //if wall hit reverse x location
     }
 
-    public void Move(float speed, bool direction){
-        if(direction){
-            catRigidBody.velocity = new(speed, catRigidBody.velocity.y);
-        }
-        else{
-            catRigidBody.velocity = new(-speed, catRigidBody.velocity.y);
-        }
+    private void FixedUpdate() {
+        Move(moveSpeed, foward);
+
     }
 
-    // private void OnCollisionEnter2D(Collision2D other) {
-    //     Debug.Log( "collided ");
-    //     //this.foward = !foward;
-    // }
+    public void Move(float speed, bool direction){
+        if(direction){
+            catRigidBody.velocity = new Vector2(speed, catRigidBody.velocity.y);
+        }
+        else{
+            catRigidBody.velocity = new Vector2(-speed, catRigidBody.velocity.y);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other) {
         Debug.Log("Trigger");
