@@ -23,9 +23,33 @@ public class GameManager : MonoBehaviour
     Node prevNode;
     int delRadius = 4;
 
+    // spawn location of cats
+    //must be within the frame of the sprite terrain
+    public Transform spawnTransform;
+    [HideInInspector]
+    public Vector3 spawnPosition;
+    [HideInInspector]
+    public Node spawnNode;
+
+    //create a cat object
+    public Units unit;
+    //public List<Units> units = new List<Units>();//convert to cats soon
+
+    //make GameManger singleton, restircts class to only one instantiation instance
+    public static GameManager singleton;
+
+    void Awake(){
+        singleton = this;
+    }
+
     void Start()
     {
         InitializeLevel();
+
+        //sets the spawnlocation of the cats
+        spawnNode = GetNodeFromWorldCoord(spawnTransform.position);
+        spawnPosition = GetWorldPosFromNode(spawnNode);
+        unit.Init(this);
     }
 
     // Initializes map grid to hold each pixel(Node) of the map sprite
@@ -74,9 +98,21 @@ public class GameManager : MonoBehaviour
             // delete part of map around where mouse was clicked
             Color col = Color.white;
             col.a = 0; // transparent
-            for (int x = -delRadius; x < delRadius; x++)
-                for (int y = -delRadius; y < delRadius; y++)
-                    tempTexture.SetPixel(currNode.x + x, currNode.y + y, col);
+            for (int x = -delRadius; x < delRadius; x++){
+                for (int y = -delRadius; y < delRadius; y++){
+                    int textureX = x + currNode.x;
+                    int textureY = y + currNode.y;
+
+                    //check node exist, to prevent wrapping fixes this bug
+                    //there is a bug where it deletes from the oppisite side too
+                    Node node = GetNode(textureX, textureY);
+                    if(node == null){
+                        continue; //skip this itteration of loop
+                    }
+                    node.isEmpty = true;
+                    tempTexture.SetPixel(textureX, textureY, col);
+                }
+            }
 
             tempTexture.Apply(); // update texture after changes
         }
@@ -98,10 +134,32 @@ public class GameManager : MonoBehaviour
     }
 
     // Retreives Node from map grid
-    Node GetNode(int x, int y)
+    public Node GetNode(int x, int y)
     {
         if (x < 0 || y < 0 || x > maxX - 1 || y > maxY - 1) return null;
         return mapGrid[x, y];
+    }
+
+    //used by cats sprite
+    //gets world cordinates of node, given an x and y cord
+    public Vector3 GetWorldPosFromNode(int x, int y){
+        Vector3 vec = Vector3.zero;
+        vec.x = x * posOffset;
+        vec.y = y * posOffset;
+        return(vec);
+    }
+
+    //used by cats sprite
+    //given a node gets world cordinates of the node
+    public Vector3 GetWorldPosFromNode(Node node){
+        if(node ==null){
+            return(-Vector3.one);//dont want negative values
+        }
+
+        Vector3 vec = Vector3.zero;
+        vec.x = node.x * posOffset;
+        vec.y = node.y * posOffset;
+        return(vec);
     }
 }
 
