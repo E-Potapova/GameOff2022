@@ -490,9 +490,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a966c06f341909488a2c4d5872a07ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pixelsPerUnit: 32
   levelTexture: {fileID: 2800000, guid: 3b7efd3cb26ba6a4c9cf31a47ff1391a, type: 3}
   levelRenderer: {fileID: 1549283113}
+  pixelsPerUnit: 32
   posOffset: 0.03125
 --- !u!1 &1043405126
 GameObject:

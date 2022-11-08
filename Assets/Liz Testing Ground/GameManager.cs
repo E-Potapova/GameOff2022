@@ -8,11 +8,13 @@ public class GameManager : MonoBehaviour
     // LEVEL SPRITE NEEDS TO BE LOCATED IN 0,0,0
     public Texture2D levelTexture;
     public SpriteRenderer levelRenderer;
+    Texture2D tempTexture; // to not write to original sprite
 
     // map grid support
     int maxX;
     int maxY;
     Node[,] mapGrid;
+    public int pixelsPerUnit = 32;
     public float posOffset = 1f/32f; // 1 / pixels per unit of the level sprite
 
     // mouse input support
@@ -23,15 +25,17 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        CreateLevelGrid();
+        InitializeLevel();
     }
 
     // Initializes map grid to hold each pixel(Node) of the map sprite
-    void CreateLevelGrid()
+    void InitializeLevel()
     {
         maxX = levelTexture.width;
         maxY = levelTexture.height;
         mapGrid = new Node[maxX, maxY];
+        tempTexture = new Texture2D(maxX, maxY); // new empty texture
+        tempTexture.filterMode = FilterMode.Point; // pixel art sprite
 
         for (int x = 0; x < maxX; x++)
         {
@@ -40,10 +44,16 @@ public class GameManager : MonoBehaviour
                 Node n = new Node();
                 n.x = x;
                 n.y = y;
-                n.isEmpty = ((levelTexture.GetPixel(x, y)).a == 0); // pixel is transparent
+                Color col = levelTexture.GetPixel(x, y);
+                tempTexture.SetPixel(x, y, col); // copy original pixel to new texture instance
+                n.isEmpty = (col.a == 0); // pixel is transparent
                 mapGrid[x, y] = n;
             }
         }
+        tempTexture.Apply();
+        Rect tempSpriteRect = new Rect(0, 0, maxX, maxY);
+        // pass texture as sprite to renderer
+        levelRenderer.sprite = Sprite.Create(tempTexture, tempSpriteRect, Vector2.zero, pixelsPerUnit);
     }
 
     private void Update()
@@ -66,9 +76,9 @@ public class GameManager : MonoBehaviour
             col.a = 0; // transparent
             for (int x = -delRadius; x < delRadius; x++)
                 for (int y = -delRadius; y < delRadius; y++)
-                    levelTexture.SetPixel(currNode.x + x, currNode.y + y, col);
+                    tempTexture.SetPixel(currNode.x + x, currNode.y + y, col);
 
-            levelTexture.Apply(); // update texture after changes
+            tempTexture.Apply(); // update texture after changes
         }
     }
 
