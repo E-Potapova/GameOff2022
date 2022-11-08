@@ -26,6 +26,6 @@ public class PlayerMouse : MonoBehaviour
         //update the transform to the mouse psotion
         transform.position = mouseWorldCord;
 
-        Debug.Log(mouseWorldCord);
+        //Debug.Log(mouseWorldCord);
     }
 }
