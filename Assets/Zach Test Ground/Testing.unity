@@ -670,6 +670,9 @@ MonoBehaviour:
   levelRenderer: {fileID: 1067431431}
   pixelsPerUnit: 32
   posOffset: 0.03125
+  spawnTransform: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  unit: {fileID: 0}
 --- !u!4 &1695553736
 Transform:
   m_ObjectHideFlags: 0
@@ -820,7 +823,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761078155}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.3607962, y: -0.25600037, z: -0.06686281}
+  m_LocalPosition: {x: -1.04, y: -7.44, z: -0.06686281}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1021,11 +1024,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7043659178133342219, guid: b2a6a44d48b055d459e5c1ff60bb3721, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.54
+      value: -7.76
       objectReference: {fileID: 0}
     - target: {fileID: 7043659178133342219, guid: b2a6a44d48b055d459e5c1ff60bb3721, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.51
+      value: -5.66
       objectReference: {fileID: 0}
     - target: {fileID: 7043659178133342219, guid: b2a6a44d48b055d459e5c1ff60bb3721, type: 3}
       propertyPath: m_LocalPosition.z
