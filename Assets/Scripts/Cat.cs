@@ -16,6 +16,9 @@ public class Cat : MonoBehaviour
     //get Boxclider
     private BoxCollider2D catCollider;
 
+    //get sprite
+    private SpriteRenderer catSprite;
+
     public Transform whiskers;
 
     #endregion
@@ -26,6 +29,7 @@ public class Cat : MonoBehaviour
         //set rigidbody and colldier
         catRigidBody = GetComponent<Rigidbody2D>();
         catCollider = GetComponent<BoxCollider2D>();
+        catSprite = GetComponent<SpriteRenderer>();
 
     }
 
@@ -58,6 +62,7 @@ public class Cat : MonoBehaviour
         this.foward = !this.foward;
 
         //flip transform and collider
+        catSprite.flipX = !catSprite.flipX;
         Debug.Log(whiskers.localPosition);
         whiskers.localPosition = -whiskers.localPosition;
     }
