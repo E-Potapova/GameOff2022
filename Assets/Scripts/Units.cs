@@ -43,7 +43,6 @@ public class Units : MonoBehaviour
     int targetX;
     int targetY;
 
-
     public void Init(GameManager gm){
         gameManager = gm;
         PlaceOnNode();
@@ -87,7 +86,7 @@ public class Units : MonoBehaviour
                 currNode = targetNode;
             }
 
-            Vector3 tp = Vector3.Lerp(startPos, targetPos, t);
+            Vector3 tp = Vector3.Lerp(startPos, targetPos, time);
             transform.position = tp;
         }
     }
