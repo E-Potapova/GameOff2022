@@ -21,7 +21,9 @@ public class GameManager : MonoBehaviour
     Vector3 mousePos;
     Node currNode;
     Node prevNode;
-    int delRadius = 4;
+    int delRadius = 6;
+    //make the delete a circle instead of square
+    public float editRadius = 6;
 
     // spawn location of cats
     //must be within the frame of the sprite terrain
@@ -35,9 +37,11 @@ public class GameManager : MonoBehaviour
     public Units unit;
     //public List<Units> units = new List<Units>();//convert to cats soon
 
+
     //make GameManger singleton, restircts class to only one instantiation instance
     public static GameManager singleton;
 
+    //tells gamemanager to start
     void Awake(){
         singleton = this;
     }
@@ -98,10 +102,21 @@ public class GameManager : MonoBehaviour
             // delete part of map around where mouse was clicked
             Color col = Color.white;
             col.a = 0; // transparent
+
+            //makes it delete in a circle
+            Vector3 center = GetWorldPosFromNode(currNode);
+            float radius = editRadius *posOffset;
+
             for (int x = -delRadius; x < delRadius; x++){
                 for (int y = -delRadius; y < delRadius; y++){
                     int textureX = x + currNode.x;
                     int textureY = y + currNode.y;
+
+                    //check if node is in range of radius, to remove
+                    float dist = Vector3.Distance(center, GetWorldPosFromNode(textureX, textureY));
+                    if(dist > radius){
+                        continue;
+                    }
 
                     //check node exist, to prevent wrapping fixes this bug
                     //there is a bug where it deletes from the oppisite side too
