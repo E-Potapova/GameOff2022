@@ -28,6 +28,10 @@ public class Units : MonoBehaviour
     bool initLerp;
     //another spead variable i guess??
     float baseSpeed; 
+    //fall speed
+    float fallSpeed = 5;
+    //check if on ground
+    bool onGround;
     //location to move to
     Vector3 targetPos;
     //how high up cat can move
@@ -59,7 +63,8 @@ public class Units : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    //no longer is an update change to a public void tick
+    public void Tick(float delta)
     {
         if(!isInit){
             return;
@@ -79,10 +84,16 @@ public class Units : MonoBehaviour
             Vector3 tp = gameManager.GetWorldPosFromNode(targetNode);
             targetPos = tp;
             float d = Vector3.Distance(targetPos, startPos);
-            baseSpeed = lerpSpeed / d;
+            if(onGround){
+                baseSpeed = lerpSpeed / d;
+            }
+            else{
+                baseSpeed = fallSpeed / d;
+            }
+            
         }
         else{
-            time += Time.deltaTime * baseSpeed;
+            time += delta * baseSpeed;
             if(time > 1){
                 time = 1;
                 initLerp = false;  
@@ -107,9 +118,12 @@ public class Units : MonoBehaviour
         if(downIsAir){
             targetX = currNode.x;
             targetY -=1;
+            onGround = false;
         }
         else{
             //if node infront of sprite is air move foward
+            onGround = true;
+
             if(fowardIsAir){
                 targetX = (movingLeft) ? targetX-1 : targetX +1;
                 targetY = currNode.y;
