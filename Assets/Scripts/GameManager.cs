@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public float editRadius = 6;
 
     // spawn location of cats
-    //must be within the frame of the sprite terrain
+    // must be within the frame of the sprite terrain
     public Transform spawnTransform;
     [HideInInspector]
     public Vector3 spawnPosition;
@@ -34,15 +34,15 @@ public class GameManager : MonoBehaviour
     public Node spawnNode;
 
     //create a cat object
-    public Units unit;
+    public Cat cat;
     //public List<Units> units = new List<Units>();//convert to cats soon
 
-
-    //make GameManger singleton, restircts class to only one instantiation instance
+    //make GameManger singleton, restricts class to only one instance
     public static GameManager singleton;
 
-    //tells gamemanager to start
-    void Awake(){
+    // tells gamemanager to start
+    void Awake()
+    {
         singleton = this;
     }
 
@@ -50,10 +50,10 @@ public class GameManager : MonoBehaviour
     {
         InitializeLevel();
 
-        //sets the spawnlocation of the cats
-        spawnNode = GetNodeFromWorldCoord(spawnTransform.position);
+        // sets the spawn location of the cats
+        spawnNode = GetNodeFromWorldPos(spawnTransform.position);
         spawnPosition = GetWorldPosFromNode(spawnNode);
-        unit.Init(this);
+        cat.Init(this);
     }
 
     // Initializes map grid to hold each pixel(Node) of the map sprite
@@ -112,14 +112,14 @@ public class GameManager : MonoBehaviour
                     int textureX = x + currNode.x;
                     int textureY = y + currNode.y;
 
-                    //check if node is in range of radius, to remove
+                    // check if node is in range of radius, to remove
                     float dist = Vector3.Distance(center, GetWorldPosFromNode(textureX, textureY));
                     if(dist > radius){
                         continue;
                     }
 
-                    //check node exist, to prevent wrapping fixes this bug
-                    //there is a bug where it deletes from the oppisite side too
+                    // check node exist, to prevent wrapping fixes this bug
+                    // there is a bug where it deletes from the oppisite side too
                     Node node = GetNode(textureX, textureY);
                     if(node == null){
                         continue; //skip this itteration of loop
@@ -137,11 +137,11 @@ public class GameManager : MonoBehaviour
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0f;
-        currNode = GetNodeFromWorldCoord(mousePos);
+        currNode = GetNodeFromWorldPos(mousePos);
     }
 
     // Gets closest (int,int) position to get Node
-    Node GetNodeFromWorldCoord(Vector3 worldCoord)
+    Node GetNodeFromWorldPos(Vector3 worldCoord)
     {
         int x = Mathf.RoundToInt(worldCoord.x / posOffset);
         int y = Mathf.RoundToInt(worldCoord.y / posOffset);
