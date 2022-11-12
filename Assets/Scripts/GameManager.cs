@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,11 +35,17 @@ public class GameManager : MonoBehaviour
     public Node spawnNode;
 
     //create a cat object
-    public Cat cat;
+    public Cat currCat;
+    CatManager catManager;
     //public List<Units> units = new List<Units>();//convert to cats soon
+
+    UIManager uiManager;
 
     //make GameManger singleton, restricts class to only one instance
     public static GameManager singleton;
+    
+    //Ui stuff
+    private bool overUIElement;
 
     // tells gamemanager to start
     void Awake()
@@ -48,12 +55,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        catManager = CatManager.singleton;
+        uiManager = UIManager.singleton;
         InitializeLevel();
 
         // sets the spawn location of the cats
         spawnNode = GetNodeFromWorldPos(spawnTransform.position);
         spawnPosition = GetWorldPosFromNode(spawnNode);
-        cat.Init(this);
+        //currCat.Init(this); i guess this isnt neede anymore
     }
 
     // Initializes map grid to hold each pixel(Node) of the map sprite
@@ -86,8 +95,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        overUIElement = EventSystem.current.IsPointerOverGameObject();
         GetMousePosition();
-        if (Input.GetMouseButton(0)) // primary button (left click)
+        CheckForUnit();
+        uiManager.Tick();
+        HandleCat();
+        if (Input.GetMouseButton(1)) // primary button (left click)
             HandleMouseClick();
     }
 
@@ -130,6 +143,34 @@ public class GameManager : MonoBehaviour
             }
 
             tempTexture.Apply(); // update texture after changes
+        }
+    }
+
+    void CheckForUnit(){
+        currCat = catManager.GetClosest(mousePos);
+        if (currCat == null){
+            uiManager.overCat = false;
+            return;
+        }
+        uiManager.overCat = true;
+    }
+
+    void HandleCat(){
+        if(currCat == null){
+            return;
+        }
+
+        if(Input.GetMouseButtonUp(0)){
+            // if(uiManager.targetAbility == CatManager.Ability.defaultWalk){
+            //     return;
+            // }
+            
+            if(currCat.currAbility == CatManager.Ability.defaultWalk){
+                currCat.ChangeAbility(uiManager.targetAbility);
+            }
+            if(currCat.currAbility != CatManager.Ability.defaultWalk){
+                currCat.ChangeAbility(uiManager.targetAbility);
+            }
         }
     }
 
