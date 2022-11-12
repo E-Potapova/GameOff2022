@@ -6,7 +6,7 @@ public class CatManager : MonoBehaviour
 {
     // if want to make tick faster or slower change timescale
     // CHANGE to be unity time scale library function thingy
-    public float maxCats = 10;
+    public float maxCats = 1;
     public float timeScale = 1;
     float delta;
     public float interval =2;
@@ -15,6 +15,11 @@ public class CatManager : MonoBehaviour
     GameObject catsParent;
     List<Cat> catList = new List<Cat>();
     GameManager gameManager;
+
+    public static CatManager singleton;
+    void Awake(){
+        singleton = this;
+    }
 
     // Start is called before the first frame update
     void Start() {
@@ -50,5 +55,27 @@ public class CatManager : MonoBehaviour
         cat.Init(gameManager);
         catList.Add(cat);
         cat.move = true;
+    }
+
+    //find the cat closest to the mouse
+    public Cat GetClosest(Vector3 vectClosest){
+        Cat closestCat = null;
+
+        float minDist  = 0.5f;
+        for(int i =0; i < catList.Count; i++){
+            float tempDist = Vector3.Distance(vectClosest, catList[i].transform.position);
+            if(tempDist < minDist){
+                minDist = tempDist;
+                closestCat = catList[i];
+            }
+        }
+
+        return(closestCat);
+
+    }
+
+    public enum Ability{
+        //enter the abilities here
+        defaultWalk, stopper, umbrella, digFoward, digDown
     }
 }

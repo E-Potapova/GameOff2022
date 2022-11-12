@@ -36,6 +36,9 @@ public class Cat : MonoBehaviour
     // how high up cat can move
     int heightMoveUp =3;
 
+    //set cat current ability
+    public CatManager.Ability currAbility;
+
     // location of sprite
     Vector3 startPos;
     float time;
@@ -53,6 +56,7 @@ public class Cat : MonoBehaviour
         gameManager = gm;
         PlaceOnNode();
         isInit = true;
+        currAbility = CatManager.Ability.defaultWalk;
     }
 
     // spawn cats
@@ -67,15 +71,39 @@ public class Cat : MonoBehaviour
         if (!isInit) {
             return;
         }
-        // if(currNode == null){
-        //     return;
-        // }
         if (!move)
         {
             return;
         }
+        catSprite.flipX = !movingLeft;
 
-        if (!initLerp) {
+        //call method for correct cat ability
+        switch(currAbility){
+            case CatManager.Ability.defaultWalk:
+                Walk(delta);
+                break;
+            case CatManager.Ability.stopper:
+                Stopper();
+                break;
+            case CatManager.Ability.umbrella:
+
+                break;
+            case CatManager.Ability.digFoward:
+
+                break;
+            case CatManager.Ability.digDown:
+
+                break;
+            default:
+                //default could just be set to walk
+                break;
+        }
+
+    }
+
+    //functions for diffrent cat abilities
+    void Walk(float delta){
+          if (!initLerp) {
             initLerp = true;
             startPos = transform.position;
             time = 0;
@@ -102,8 +130,22 @@ public class Cat : MonoBehaviour
             Vector3 tp = Vector3.Lerp(startPos, targetPos, time);
             transform.position = tp;
         }
+    }
 
-        catSprite.flipX = !movingLeft;
+    void Stopper(){
+
+    }
+
+    public void ChangeAbility(CatManager.Ability newAbility){
+        currAbility = newAbility;
+        switch(currAbility){
+            case CatManager.Ability.defaultWalk:
+                break;
+            case CatManager.Ability.stopper:
+                break;
+            default:
+                break;
+        }
     }
 
     void Pathfind() {
@@ -124,7 +166,7 @@ public class Cat : MonoBehaviour
             onGround = true;
 
             if (fowardIsAir) {
-                targetX = (movingLeft) ? targetX-1 : targetX +1;
+                targetX = (movingLeft) ? targetX - 1 : targetX + 1;
                 targetY = currNode.y;
             }
             else {
@@ -144,7 +186,7 @@ public class Cat : MonoBehaviour
                 else {
                     //move other direction
                     movingLeft = !movingLeft;
-                    targetX = (movingLeft) ? targetX-1 : targetY +1;
+                    targetX = (movingLeft) ? targetX -1 : targetX +1;
                 }
 
             }
