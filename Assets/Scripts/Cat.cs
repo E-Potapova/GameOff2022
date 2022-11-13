@@ -21,6 +21,11 @@ public class Cat : MonoBehaviour
     // direction to move
     public bool movingLeft;
 
+    //falling variables
+    public bool falling;
+    public bool isUmbrella;
+
+
     // the movement speed of the sprite
     public float lerpSpeed = 1;
     // used to update the sprites current location
@@ -28,9 +33,12 @@ public class Cat : MonoBehaviour
     // another speed variable i guess??
     float baseSpeed; 
     // fall speed
-    float fallSpeed = 5;
+    float fallSpeed = 5f;
+    float umbrellaSpeed = 0.5f;
+    float airTime =0;
     // check if on ground
     bool onGround;
+    bool prevGround;
     // location to move to
     Vector3 targetPos;
     // how high up cat can move
@@ -113,12 +121,17 @@ public class Cat : MonoBehaviour
             Pathfind();
             Vector3 tp = gameManager.GetWorldPosFromNode(targetNode);
             targetPos = tp;
-            float d = Vector3.Distance(targetPos, startPos);
+            float dist = Vector3.Distance(targetPos, startPos);
             if (onGround) {
-                baseSpeed = lerpSpeed / d;
+                baseSpeed = lerpSpeed / dist;
             }
             else {
-                baseSpeed = fallSpeed / d;
+                if(isUmbrella){
+                    baseSpeed = umbrellaSpeed / dist;
+                }
+                else{
+                    baseSpeed = fallSpeed / dist;
+                }
             }
             
         }
@@ -139,14 +152,22 @@ public class Cat : MonoBehaviour
 
     }
 
+//might not actually need as it is same as walker code, basically
+    void Umbrella(){
+
+    }
+
     public bool ChangeAbility(CatManager.Ability newAbility){
+
+        //set booleans to false
+        isUmbrella = false;
         //currAbility = newAbility;
         switch(newAbility){
             case CatManager.Ability.defaultWalk:
                 currAbility = newAbility;
                 break;
             case CatManager.Ability.stopper:
-                if(onGround){
+                if(prevGround){
                     FindStopNodes();
                     currAbility = newAbility;
                     return(true);
@@ -154,6 +175,13 @@ public class Cat : MonoBehaviour
                 else{
                     return(false);
                 }
+
+            case CatManager.Ability.umbrella:
+                isUmbrella = true;
+                break;
+            case CatManager.Ability.dead:
+                currAbility = newAbility;
+                break;
             default:
                 break;
         }
@@ -161,7 +189,15 @@ public class Cat : MonoBehaviour
         return true;
     }
 
-    void Pathfind() {
+    bool Pathfind() { //change to bool to exit early
+
+        if(currNode == null){
+            targetPos = transform.position;
+            targetPos.y = -50;
+            prevGround = onGround;
+            return false;
+        }
+
         targetX = currNode.x;
         targetY = currNode.y;
 
@@ -169,20 +205,45 @@ public class Cat : MonoBehaviour
         bool fowardIsAir = IsAir(targetX, targetY);
 
         //if node below sprite is air fall
-        if (downIsAir) {
+        if (downIsAir) { //cat is falling
             targetX = currNode.x;
             targetY -=1;
-            onGround = false;
+            airTime++;
+
+            if(onGround){
+                if(airTime > 4){
+                    onGround =false;
+                }
+            }
         }
-        else {
+        else { //cat is on ground
             //if node infront of sprite is air move foward
             onGround = true;
             
+            //check if cat fell to far and is now dead
+            if(onGround && !prevGround){
+                if(airTime > 80 && !isUmbrella){
+                    targetNode = currNode;
+                    ChangeAbility(CatManager.Ability.dead);
+                    prevGround = onGround;
+                    return true;
+                }
+                else{
+                    //landed safe
+                    targetNode = currNode;
+                    prevGround =onGround;
+                    airTime = 0;
+                    return true;
+                }
+            }
+            airTime = 0;
+
             bool stop = IsStop((movingLeft) ? targetX -1 : targetX +1, targetY);
            
             if(stop){
                 movingLeft = !movingLeft;
                 targetX = (movingLeft) ? targetX -1 : targetX +1;
+                targetY = currNode.y;
             }
             else{
 
@@ -213,8 +274,9 @@ public class Cat : MonoBehaviour
                 }
             }
         }
-
         targetNode = gameManager.GetNode(targetX, targetY);
+        prevGround = onGround;
+        return true;
     }
 
     //check if node location is null/air
