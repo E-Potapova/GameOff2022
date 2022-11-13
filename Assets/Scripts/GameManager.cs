@@ -163,15 +163,18 @@ public class GameManager : MonoBehaviour
         if(Input.GetMouseButtonUp(0)){
             // if(uiManager.targetAbility == CatManager.Ability.defaultWalk){
             //     return;
-            // }
+            // } i commented this out so i can make cats walk again
             
             if(currCat.currAbility == CatManager.Ability.defaultWalk){
                 currCat.ChangeAbility(uiManager.targetAbility);
             }
+
+            //added this to make cats walk again when i tell them too
             if(currCat.currAbility != CatManager.Ability.defaultWalk){
                 currCat.ChangeAbility(uiManager.targetAbility);
             }
         }
+
     }
 
     void GetMousePosition()
@@ -225,4 +228,7 @@ public class Node
     public int x;
     public int y;
     public bool isEmpty;
+
+    public bool isStop;
+
 }

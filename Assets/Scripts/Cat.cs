@@ -52,6 +52,9 @@ public class Cat : MonoBehaviour
     int targetX;
     int targetY;
 
+    //keeptrack of all stop nodes
+    List<Node> stopNodes = new List<Node>();
+
     public void Init(GameManager gm) {
         gameManager = gm;
         PlaceOnNode();
@@ -136,16 +139,26 @@ public class Cat : MonoBehaviour
 
     }
 
-    public void ChangeAbility(CatManager.Ability newAbility){
-        currAbility = newAbility;
-        switch(currAbility){
+    public bool ChangeAbility(CatManager.Ability newAbility){
+        //currAbility = newAbility;
+        switch(newAbility){
             case CatManager.Ability.defaultWalk:
+                currAbility = newAbility;
                 break;
             case CatManager.Ability.stopper:
-                break;
+                if(onGround){
+                    FindStopNodes();
+                    currAbility = newAbility;
+                    return(true);
+                }
+                else{
+                    return(false);
+                }
             default:
                 break;
         }
+
+        return true;
     }
 
     void Pathfind() {
@@ -164,31 +177,40 @@ public class Cat : MonoBehaviour
         else {
             //if node infront of sprite is air move foward
             onGround = true;
-
-            if (fowardIsAir) {
-                targetX = (movingLeft) ? targetX - 1 : targetX + 1;
-                targetY = currNode.y;
+            
+            bool stop = IsStop((movingLeft) ? targetX -1 : targetX +1, targetY);
+           
+            if(stop){
+                movingLeft = !movingLeft;
+                targetX = (movingLeft) ? targetX -1 : targetX +1;
             }
-            else {
-                int moveUP = 0;
-                bool isValid = false;
-                while (moveUP < heightMoveUp) {
-                    moveUP++;
-                    fowardIsAir = IsAir(targetX, targetY + moveUP); //might need to change variable fowardIsAir
-                    if(fowardIsAir){
-                        isValid = true;
-                        break;
-                    }
-                }
-                if (isValid) {
-                    targetY += moveUP;
+            else{
+
+                if (fowardIsAir) {
+                    targetX = (movingLeft) ? targetX - 1 : targetX + 1;
+                    targetY = currNode.y;
                 }
                 else {
-                    //move other direction
-                    movingLeft = !movingLeft;
-                    targetX = (movingLeft) ? targetX -1 : targetX +1;
-                }
+                    int moveUP = 0;
+                    bool isValid = false;
+                    while (moveUP < heightMoveUp) {
+                        moveUP++;
+                        fowardIsAir = IsAir(targetX, targetY + moveUP); //might need to change variable fowardIsAir
+                        if(fowardIsAir){
+                            isValid = true;
+                            break;
+                        }
+                    }
+                    if (isValid) {
+                        targetY += moveUP;
+                    }
+                    else {
+                        //move other direction
+                        movingLeft = !movingLeft;
+                        targetX = (movingLeft) ? targetX -1 : targetX +1;
+                    }
 
+                }
             }
         }
 
@@ -203,4 +225,35 @@ public class Cat : MonoBehaviour
         }
         return (node.isEmpty);
     }
+
+    bool IsStop(int x, int y){
+        Node node = gameManager.GetNode(x, y);
+        if (node == null) {
+            return (false);
+        }
+        return (node.isStop);
+    }
+
+    void FindStopNodes(){
+        for(int x = -2; x < 2; x++){//how far to check in front of lemming 
+            for(int y = 0; y < 5; y++){ //needs to be higher then climb height
+                Node tempNode = gameManager.GetNode(currNode.x + x, currNode.y + y);
+                if( tempNode == null){
+                    continue;
+                }
+
+                tempNode.isStop = true;
+                stopNodes.Add(tempNode);
+            }
+        }
+    }
+
+    //clear stopNodes list and set all nodes back to false for stopping
+    public void ClearStopNodes(){
+        for(int i = 0; i < stopNodes.Count; i++){
+            stopNodes[i].isStop = false;
+        }
+        stopNodes.Clear();
+    }
+
 }
