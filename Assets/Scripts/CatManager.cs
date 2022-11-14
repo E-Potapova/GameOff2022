@@ -69,13 +69,12 @@ public class CatManager : MonoBehaviour
                 closestCat = catList[i];
             }
         }
-
         return(closestCat);
 
     }
 
     public enum Ability{
         //enter the abilities here
-        defaultWalk, stopper, umbrella, digFoward, digDown
+        defaultWalk, stopper, umbrella, digFoward, digDown, dead,
     }
 }

@@ -11,12 +11,12 @@ public class GameManager : MonoBehaviour
     public SpriteRenderer levelRenderer;
     Texture2D tempTexture; // to not write to original sprite
 
-    // map grid support
+    // map grid support32
     int maxX;
     int maxY;
     Node[,] mapGrid;
-    public int pixelsPerUnit = 32;
-    public float posOffset = 1f/32f; // 1 / pixels per unit of the level sprite
+    public int pixelsPerUnit = 64;
+    public float posOffset = 1f/64f; // 1 / pixels per unit of the level sprite
 
     // mouse input support
     Vector3 mousePos;
