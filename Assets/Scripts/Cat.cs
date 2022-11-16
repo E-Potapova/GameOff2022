@@ -24,6 +24,7 @@ public class Cat : MonoBehaviour
     //falling variables
     public bool falling;
     public bool isUmbrella;
+    public bool isDigFoward;
 
 
     // the movement speed of the sprite
@@ -36,6 +37,7 @@ public class Cat : MonoBehaviour
     float fallSpeed = 5f;
     float umbrellaSpeed = 0.5f;
     float airTime =0;
+    float digDownSpeed = 0.1f;
     // check if on ground
     bool onGround;
     bool prevGround;
@@ -100,28 +102,31 @@ public class Cat : MonoBehaviour
 
                 break;
             case CatManager.Ability.digFoward:
-
+                DigFoward(delta);
                 break;
             case CatManager.Ability.digDown:
-
+                DigDown(delta);
                 break;
             default:
                 //default could just be set to walk
                 break;
         }
-
     }
 
     //functions for diffrent cat abilities
     void Walk(float delta){
-          if (!initLerp) {
+        if (!initLerp) {
             initLerp = true;
             startPos = transform.position;
             time = 0;
-            Pathfind();
-            Vector3 tp = gameManager.GetWorldPosFromNode(targetNode);
-            targetPos = tp;
+            bool hasPath = Pathfind();
+            //Pathfind();
+            if(hasPath){
+                Vector3 tp = gameManager.GetWorldPosFromNode(targetNode);
+                targetPos = tp;
+            }
             float dist = Vector3.Distance(targetPos, startPos);
+           
             if (onGround) {
                 baseSpeed = lerpSpeed / dist;
             }
@@ -136,15 +141,7 @@ public class Cat : MonoBehaviour
             
         }
         else {
-            time += delta * baseSpeed;
-            if (time > 1) {
-                time = 1;
-                initLerp = false;  
-                currNode = targetNode;
-            }
-
-            Vector3 tp = Vector3.Lerp(startPos, targetPos, time);
-            transform.position = tp;
+            LerpIntoPosition(delta);
         }
     }
 
@@ -157,6 +154,156 @@ public class Cat : MonoBehaviour
 
     }
 
+    void DigDown(float delta){
+        if(!initLerp){
+            initLerp = true;
+            startPos = transform.position;
+            time = 0;
+
+            //list of nodes below and next to cat
+            List<Node> foundGroundNodes = CheckNodesDown();
+
+            //make sure there is stuff to dig
+            if(foundGroundNodes.Count == 0){
+                //if there is nothing below cat, cat should fall
+                //change cat back to default walk
+                ChangeAbility(CatManager.Ability.defaultWalk);
+                return;
+            }
+            //if there are pixels to dig remove them
+            gameManager.ClearListOfPixels(foundGroundNodes);
+
+            Node tempNode = gameManager.GetNode(currNode.x, currNode.y -1);
+
+            if(tempNode == null){ //we should never have this condition be true, but this is extra safety
+                ChangeAbility(CatManager.Ability.defaultWalk);
+                return;
+            }
+            targetNode = tempNode;
+            targetPos = gameManager.GetWorldPosFromNode(targetNode);
+            float dist = Vector3.Distance(targetPos, startPos);
+
+            baseSpeed = digDownSpeed/dist;
+        }
+        else{
+            LerpIntoPosition(delta);
+        }
+    }
+
+    List<Node> CheckNodesDown(){
+
+        List<Node> groundNodeList = new List<Node>();
+
+        //also check the x nodes to dig a wide tunnel
+        for(int x = -5; x < 5; x++){
+            int targetX = currNode.x +x;
+            for(int y = 0; y < 2; y++){ // check nodes below cat
+                //make it dig circular not square
+                if(x == 5 ){
+                    if(y ==1){
+                        continue;
+                    }
+                }
+                int targetY = currNode.y - y; //cats are digging down
+                Node tempNode = gameManager.GetNode(targetX, targetY);
+                if(tempNode == null){
+                    continue;
+                }
+                else{ //there is something below the cat that can be destroyed
+                    if(!tempNode.isEmpty){
+                        groundNodeList.Add(tempNode);
+                    }
+                }
+            }
+        }
+        return groundNodeList;
+    }
+
+    void DigFoward(float delta){
+        if(!initLerp){
+            initLerp = true;
+            startPos = transform.position;
+            time = 0;
+
+            //list of nodes below and next to cat
+            List<Node> foundGroundNodes = CheckNodesForward();
+
+            //make sure there is stuff to dig
+            if(foundGroundNodes.Count == 0){
+                //if there is nothing below cat, cat should fall
+                //change cat back to default walk
+                ChangeAbility(CatManager.Ability.defaultWalk);
+                isDigFoward = false;
+                return;
+            }
+            //if there are pixels to dig remove them
+            gameManager.ClearListOfPixels(foundGroundNodes);
+
+            //can just move into node statment
+            int targetX = (movingLeft) ? currNode.x -1 : currNode.x +1;
+
+            Node tempNode = gameManager.GetNode(targetX, currNode.y);
+
+            if(tempNode == null){ //we should never have this condition be true, but this is extra safety
+                ChangeAbility(CatManager.Ability.defaultWalk);
+                isDigFoward = false;
+                return;
+            }
+            targetNode = tempNode;
+            targetPos = gameManager.GetWorldPosFromNode(targetNode);
+            float dist = Vector3.Distance(targetPos, startPos);
+
+            baseSpeed = digDownSpeed/dist;
+        }
+        else{
+            LerpIntoPosition(delta);
+        }
+    }
+
+    List<Node> CheckNodesForward(){
+        List<Node> groundNodeList = new List<Node>();
+
+        //change y to loop to cat height, this is how tall of tunnel to dig
+        for(int y = 0; y< 15; y++){
+            for(int x =0; x < 3; x++){
+                // if(x==2){ //makes dig circular
+                //     if(y == 0 || y ==6){
+                //         continue;
+                //     }
+                // }
+
+                int targetX = currNode.x;
+                targetX = (movingLeft) ? targetX - x : targetX + x;
+
+                int targetY = currNode.y + y;
+
+                Node tempNode = gameManager.GetNode(targetX, targetY);
+                if(tempNode == null){
+                    continue;
+                }
+                else{ //there is something below the cat that can be destroyed
+                    if(!tempNode.isEmpty){
+                        groundNodeList.Add(tempNode);
+                    }
+                }
+            }
+        }
+        return groundNodeList;
+    }
+
+    //lerp is linear interpolation, basically this code moves the node location of the cat to the next node after a set time
+    void LerpIntoPosition(float delta){
+        time += delta * baseSpeed;
+            if (time > 1) {
+                time = 1;
+                initLerp = false;  
+                currNode = targetNode;
+            }
+
+            Vector3 tp = Vector3.Lerp(startPos, targetPos, time);
+            transform.position = tp;
+    }
+
     public bool ChangeAbility(CatManager.Ability newAbility){
 
         //set booleans to false
@@ -165,9 +312,10 @@ public class Cat : MonoBehaviour
         switch(newAbility){
             case CatManager.Ability.defaultWalk:
                 currAbility = newAbility;
+                ClearStopNodes(); //this works correctly !!
                 break;
             case CatManager.Ability.stopper:
-                if(prevGround){
+                if(prevGround){ //make sure we are on ground inorder to perform action
                     FindStopNodes();
                     currAbility = newAbility;
                     return(true);
@@ -175,9 +323,20 @@ public class Cat : MonoBehaviour
                 else{
                     return(false);
                 }
-
             case CatManager.Ability.umbrella:
                 isUmbrella = true;
+                break;
+            case CatManager.Ability.digDown:
+                if(prevGround){
+                    FindStopNodes();
+                    currAbility = newAbility;
+                    return(true);
+                }
+                else{
+                    return false;
+                }
+            case CatManager.Ability.digFoward:
+                isDigFoward = true;
                 break;
             case CatManager.Ability.dead:
                 currAbility = newAbility;
@@ -266,9 +425,17 @@ public class Cat : MonoBehaviour
                         targetY += moveUP;
                     }
                     else {
-                        //move other direction
-                        movingLeft = !movingLeft;
-                        targetX = (movingLeft) ? targetX -1 : targetX +1;
+                        //if cat should dig 
+                        if(isDigFoward){
+                            currAbility = CatManager.Ability.digFoward;
+                            //animation here
+                            return(false);
+                        }
+                        else{
+                            //move other direction
+                            movingLeft = !movingLeft;
+                            targetX = (movingLeft) ? targetX -1 : targetX +1;
+                        }
                     }
 
                 }
@@ -312,6 +479,7 @@ public class Cat : MonoBehaviour
 
     //clear stopNodes list and set all nodes back to false for stopping
     public void ClearStopNodes(){
+        Debug.Log(stopNodes);
         for(int i = 0; i < stopNodes.Count; i++){
             stopNodes[i].isStop = false;
         }
