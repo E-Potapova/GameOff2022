@@ -174,7 +174,6 @@ public class GameManager : MonoBehaviour
                 currCat.ChangeAbility(uiManager.targetAbility);
             }
         }
-
     }
 
     void GetMousePosition()
@@ -185,7 +184,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Gets closest (int,int) position to get Node
-    Node GetNodeFromWorldPos(Vector3 worldCoord)
+    public Node GetNodeFromWorldPos(Vector3 worldCoord)
     {
         int x = Mathf.RoundToInt(worldCoord.x / posOffset);
         int y = Mathf.RoundToInt(worldCoord.y / posOffset);
@@ -220,6 +219,18 @@ public class GameManager : MonoBehaviour
         vec.y = node.y * posOffset;
         return(vec);
     }
+
+    public void ClearListOfPixels(List<Node> nodeList){
+        Color newColor =Color.white;
+        newColor.a = 0; //set color transparecny to invisible
+
+        for(int i =0; i < nodeList.Count; i++){
+            nodeList[i].isEmpty = true;
+            tempTexture.SetPixel(nodeList[i].x, nodeList[i].y, newColor);
+        }
+        tempTexture.Apply();
+    }
+
 }
 
 // Represents a pixel of the level's map
