@@ -16,6 +16,12 @@ public class CatManager : MonoBehaviour
     List<Cat> catList = new List<Cat>();
     GameManager gameManager;
 
+    List<Cat> safeCats = new List<Cat>();
+    public int catsSafe;
+    public int catsSpawned =0;
+    
+    bool win = false;
+
     public static CatManager singleton;
     void Awake(){
         singleton = this;
@@ -33,7 +39,7 @@ public class CatManager : MonoBehaviour
         delta = Time.deltaTime;
         delta *= timeScale;
 
-        if (catList.Count < maxCats) {
+        if (catsSpawned < maxCats) {
             timer -= delta;
             if(timer < 0){
                 //create new unit
@@ -42,10 +48,31 @@ public class CatManager : MonoBehaviour
             }
         }
 
+        //adding new stuff for remobing units
+        safeCats.Clear();
+
+
         //go through all cats
         for(int i = 0; i < catList.Count; i++){
+            if(catList[i].isSafe){
+                safeCats.Add(catList[i]);
+                continue;
+            }
             catList[i].Tick(delta);
         }
+
+        for(int i = 0; i < safeCats.Count; i++){
+            if(catList.Contains(safeCats[i])){
+                catList.Remove(safeCats[i]);
+                catsSafe++;
+            }
+        }
+
+        if(catsSafe == catsSpawned && !win){
+            win = true;
+            Debug.Log("You Winn");
+        }
+
     }
 
     void SpawnCat() {
@@ -55,6 +82,11 @@ public class CatManager : MonoBehaviour
         cat.Init(gameManager);
         catList.Add(cat);
         cat.move = true;
+        catsSpawned++;
+    }
+
+    void DeSpawnCat(){
+        
     }
 
     //find the cat closest to the mouse

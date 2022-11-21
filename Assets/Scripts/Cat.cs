@@ -26,6 +26,8 @@ public class Cat : MonoBehaviour
     public bool isUmbrella;
     public bool isDigFoward;
 
+    public bool isSafe = false;
+
 
     // the movement speed of the sprite
     public float lerpSpeed = 1;
@@ -40,7 +42,7 @@ public class Cat : MonoBehaviour
     float digDownSpeed = 0.1f;
     float buildTime= 0.5f;
     float buildSpeed = 0.05f;
-    int maxBuildAmount = 100;
+    int maxBuildAmount = 25;
     int builtAmount = 0;
     float bTimer = 0;
 
@@ -324,7 +326,7 @@ public class Cat : MonoBehaviour
                 startPos = transform.position;
                 targetNode = gameManager.GetNode(targetX, targetY);
 
-                if(targetNode.isEmpty || interupt){
+                if(targetNode.isEmpty == false || interupt){
                     ChangeAbility(CatManager.Ability.defaultWalk);
                     return;
                 }
@@ -334,10 +336,10 @@ public class Cat : MonoBehaviour
                 baseSpeed = buildSpeed/dist;
 
                 List<Node> buildNodes = new List<Node>();
-                for(int i =0; i < 5; i++){
+                for(int i = 0; i < 5; i++){
                     int xHeight = targetX + i;
                     Node checkNode = gameManager.GetNode(xHeight, currNode.y);
-                    if(checkNode.isEmpty){
+                    if(checkNode.isEmpty == true){
                         buildNodes.Add(checkNode);
                     }
                 }
@@ -366,11 +368,15 @@ public class Cat : MonoBehaviour
     public bool ChangeAbility(CatManager.Ability newAbility){
 
         //set booleans to false
-        isUmbrella = false;
+        //isUmbrella = false;
         //currAbility = newAbility;
         switch(newAbility){
             case CatManager.Ability.defaultWalk:
                 currAbility = newAbility;
+                //reset all the boolean abilities to false, might cause bug need to test
+                isDigFoward = false;
+                isUmbrella = false;
+
                 ClearStopNodes(); //this works correctly !!
                 break;
             case CatManager.Ability.stopper:
@@ -422,6 +428,13 @@ public class Cat : MonoBehaviour
             targetPos.y = -50;
             prevGround = onGround;
             return false;
+        }
+
+        if(currNode.isGoal){
+            isSafe = true;
+            gameObject.SetActive(false);
+            Debug.Log("Cat Escaped ");
+            return false; //just exit the loop
         }
 
         targetX = currNode.x;
