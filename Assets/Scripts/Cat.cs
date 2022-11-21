@@ -38,6 +38,12 @@ public class Cat : MonoBehaviour
     float umbrellaSpeed = 0.5f;
     float airTime =0;
     float digDownSpeed = 0.1f;
+    float buildTime= 0.5f;
+    float buildSpeed = 0.05f;
+    int maxBuildAmount = 100;
+    int builtAmount = 0;
+    float bTimer = 0;
+
     // check if on ground
     bool onGround;
     bool prevGround;
@@ -99,13 +105,17 @@ public class Cat : MonoBehaviour
                 Stopper();
                 break;
             case CatManager.Ability.umbrella:
-
                 break;
             case CatManager.Ability.digFoward:
                 DigFoward(delta);
                 break;
             case CatManager.Ability.digDown:
                 DigDown(delta);
+                break;
+            case CatManager.Ability.builder:
+                Builder(delta);
+                break;
+            case CatManager.Ability.filler:
                 break;
             default:
                 //default could just be set to walk
@@ -291,6 +301,55 @@ public class Cat : MonoBehaviour
         return groundNodeList;
     }
 
+    void Builder(float delta){
+        if(!initLerp){
+            bTimer += delta;
+            if(bTimer > buildTime){
+                bTimer = 0;
+                initLerp = true;
+                bool interupt = false; //make sure not to build through a wall
+                builtAmount++;
+
+                if(builtAmount > maxBuildAmount){
+                    interupt = true;
+                }
+
+                int targetX = currNode.x;
+                int targetY = currNode.y;
+
+                targetX = (movingLeft) ? targetX - 1 : targetX + 1;
+                targetY = targetY +1; //always build 1 up, makes it diagnol
+
+
+                startPos = transform.position;
+                targetNode = gameManager.GetNode(targetX, targetY);
+
+                if(targetNode.isEmpty || interupt){
+                    ChangeAbility(CatManager.Ability.defaultWalk);
+                    return;
+                }
+
+                targetPos = gameManager.GetWorldPosFromNode(targetNode.x, targetNode.y);
+                float dist = Vector3.Distance(startPos, targetPos);
+                baseSpeed = buildSpeed/dist;
+
+                List<Node> buildNodes = new List<Node>();
+                for(int i =0; i < 5; i++){
+                    int xHeight = targetX + i;
+                    Node checkNode = gameManager.GetNode(xHeight, currNode.y);
+                    if(checkNode.isEmpty){
+                        buildNodes.Add(checkNode);
+                    }
+                }
+
+                gameManager.NodesToBuild(buildNodes);
+            }
+        }
+        else{
+            LerpIntoPosition(delta);
+        }
+    }
+
     //lerp is linear interpolation, basically this code moves the node location of the cat to the next node after a set time
     void LerpIntoPosition(float delta){
         time += delta * baseSpeed;
@@ -337,6 +396,14 @@ public class Cat : MonoBehaviour
                 }
             case CatManager.Ability.digFoward:
                 isDigFoward = true;
+                break;
+            case CatManager.Ability.builder:
+                //play animation
+                currAbility = newAbility;
+                builtAmount = 0;
+                break;
+            case CatManager.Ability.filler:
+                currAbility = newAbility;
                 break;
             case CatManager.Ability.dead:
                 currAbility = newAbility;

@@ -39,6 +39,9 @@ public class GameManager : MonoBehaviour
     CatManager catManager;
     //public List<Units> units = new List<Units>();//convert to cats soon
 
+    //cat building
+    public Color buildColor = Color.cyan;
+
     UIManager uiManager;
 
     //make GameManger singleton, restricts class to only one instance
@@ -90,7 +93,7 @@ public class GameManager : MonoBehaviour
         tempTexture.Apply();
         Rect tempSpriteRect = new Rect(0, 0, maxX, maxY);
         // pass texture as sprite to renderer
-        levelRenderer.sprite = Sprite.Create(tempTexture, tempSpriteRect, Vector2.zero, pixelsPerUnit);
+        levelRenderer.sprite = Sprite.Create(tempTexture, tempSpriteRect, Vector2.zero, pixelsPerUnit, 0, SpriteMeshType.FullRect);
     }
 
     private void Update()
@@ -138,7 +141,13 @@ public class GameManager : MonoBehaviour
                         continue; //skip this itteration of loop
                     }
                     node.isEmpty = true;
+
+                    //test building
+                    //change back to col
                     tempTexture.SetPixel(textureX, textureY, col);
+
+                    //for drawing
+                    //tempTexture.SetPixel(textureX, textureY, buildColor);
                 }
             }
 
@@ -228,8 +237,32 @@ public class GameManager : MonoBehaviour
             nodeList[i].isEmpty = true;
             tempTexture.SetPixel(nodeList[i].x, nodeList[i].y, newColor);
         }
+        
         tempTexture.Apply();
     }
+
+
+    List<Node> buildNodes = new List<Node>();
+    public void NodesToBuild(List<Node> nodesToBuild){
+        buildNodes.AddRange(nodesToBuild);
+    }
+
+    void BuildListOfNodes(){
+        if(buildNodes.Count == 0){
+            return;
+        }
+
+        for(int i =0; i < buildNodes.Count; i++){
+            buildNodes[i].isEmpty = false; //confused
+            tempTexture.SetPixel(buildNodes[i].x, buildNodes[i].y, buildColor);
+        }
+
+        buildNodes.Clear();
+        tempTexture.Apply(); //this is done diffrent
+    }
+
+
+
 
 }
 
