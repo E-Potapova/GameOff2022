@@ -75,6 +75,6 @@ public class CatManager : MonoBehaviour
 
     public enum Ability{
         //enter the abilities here
-        defaultWalk, stopper, umbrella, digFoward, digDown, dead,
+        defaultWalk, stopper, umbrella, digFoward, digDown, dead, builder, filler
     }
 }
