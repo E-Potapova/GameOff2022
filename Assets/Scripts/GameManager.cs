@@ -34,6 +34,13 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public Node spawnNode;
 
+    //end goal for cats 
+    public Transform goalTransform;
+    [HideInInspector]
+    public Vector3 goalposition;
+    [HideInInspector]
+    public Node goalNode;
+
     //create a cat object
     public Cat currCat;
     CatManager catManager;
@@ -66,6 +73,11 @@ public class GameManager : MonoBehaviour
         spawnNode = GetNodeFromWorldPos(spawnTransform.position);
         spawnPosition = GetWorldPosFromNode(spawnNode);
         //currCat.Init(this); i guess this isnt neede anymore
+
+        //set the goal location for the cats
+        goalNode = GetNodeFromWorldPos(goalTransform.position);
+        goalposition = GetWorldPosFromNode(goalNode);
+        SetupGoalPositions();
     }
 
     // Initializes map grid to hold each pixel(Node) of the map sprite
@@ -103,6 +115,7 @@ public class GameManager : MonoBehaviour
         CheckForUnit();
         uiManager.Tick();
         HandleCat();
+        BuildListOfNodes();
         if (Input.GetMouseButton(1)) // primary button (left click)
             HandleMouseClick();
     }
@@ -219,7 +232,7 @@ public class GameManager : MonoBehaviour
     //used by cats sprite
     //given a node gets world cordinates of the node
     public Vector3 GetWorldPosFromNode(Node node){
-        if(node ==null){
+        if(node == null){
             return(-Vector3.one);//dont want negative values
         }
 
@@ -261,7 +274,24 @@ public class GameManager : MonoBehaviour
         tempTexture.Apply(); //this is done diffrent
     }
 
+    //makes the end goal an area instead of singular node
+    public void SetupGoalPositions(){
+        for(int x = -1; x < 1; x++){
+            for(int y =-2; y < 8; y++){
+                int targetX = goalNode.x + x;
+                int targetY = goalNode.y + y;
 
+                Node tempNode = GetNode(targetX, targetY);
+
+
+                if(tempNode == null){
+                    continue;
+                }
+
+                tempNode.isGoal = true;
+            }
+        }
+    }
 
 
 }
@@ -274,5 +304,7 @@ public class Node
     public bool isEmpty;
 
     public bool isStop;
+
+    public bool isGoal;
 
 }
