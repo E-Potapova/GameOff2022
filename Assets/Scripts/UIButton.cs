@@ -7,6 +7,7 @@ using static CatManager;
 public class UIButton : MonoBehaviour
 {
 
+    //ui button elements go here
     public Ability ability;
     public Image buttonImg;
 

@@ -12,21 +12,26 @@ public class GameManager : MonoBehaviour
     Texture2D tempTexture; // to not write to original sprite
 
     // map grid support32
+    #region map support
     int maxX;
     int maxY;
     Node[,] mapGrid;
     public int pixelsPerUnit = 64;
     public float posOffset = 1f/64f; // 1 / pixels per unit of the level sprite
+    #endregion
 
     // mouse input support
+    #region mouse input
     Vector3 mousePos;
     Node currNode;
     Node prevNode;
     int delRadius = 6;
     //make the delete a circle instead of square
     public float editRadius = 6;
+    #endregion
 
-    // spawn location of cats
+    // spawn location and goal for cats
+    #region spawn n Goal
     // must be within the frame of the sprite terrain
     public Transform spawnTransform;
     [HideInInspector]
@@ -40,12 +45,11 @@ public class GameManager : MonoBehaviour
     public Vector3 goalposition;
     [HideInInspector]
     public Node goalNode;
+    #endregion
 
     //create a cat object
     public Cat currCat;
     CatManager catManager;
-    //public List<Units> units = new List<Units>();//convert to cats soon
-
     //cat building
     public Color buildColor = Color.cyan;
 
@@ -112,7 +116,7 @@ public class GameManager : MonoBehaviour
     {
         overUIElement = EventSystem.current.IsPointerOverGameObject();
         GetMousePosition();
-        CheckForUnit();
+        CheckForCat();
         uiManager.Tick();
         HandleCat();
         BuildListOfNodes();
@@ -120,6 +124,13 @@ public class GameManager : MonoBehaviour
             HandleMouseClick();
     }
 
+    #region Mouse functions
+    void GetMousePosition()
+    {
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0f;
+        currNode = GetNodeFromWorldPos(mousePos);
+    }
     void HandleMouseClick()
     {
         if (currNode == null) return;
@@ -167,8 +178,10 @@ public class GameManager : MonoBehaviour
             tempTexture.Apply(); // update texture after changes
         }
     }
-
-    void CheckForUnit(){
+    #endregion
+   
+    #region Cat Handelers
+    void CheckForCat(){
         currCat = catManager.GetClosest(mousePos);
         if (currCat == null){
             uiManager.overCat = false;
@@ -197,14 +210,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    #endregion
 
-    void GetMousePosition()
-    {
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0f;
-        currNode = GetNodeFromWorldPos(mousePos);
-    }
-
+    #region Node Getters
     // Gets closest (int,int) position to get Node
     public Node GetNodeFromWorldPos(Vector3 worldCoord)
     {
@@ -241,7 +249,7 @@ public class GameManager : MonoBehaviour
         vec.y = node.y * posOffset;
         return(vec);
     }
-
+    #endregion
     public void ClearListOfPixels(List<Node> nodeList){
         Color newColor =Color.white;
         newColor.a = 0; //set color transparecny to invisible
@@ -254,7 +262,7 @@ public class GameManager : MonoBehaviour
         tempTexture.Apply();
     }
 
-
+    #region Nodes Built by cat
     List<Node> buildNodes = new List<Node>();
     public void NodesToBuild(List<Node> nodesToBuild){
         buildNodes.AddRange(nodesToBuild);
@@ -273,7 +281,8 @@ public class GameManager : MonoBehaviour
         buildNodes.Clear();
         tempTexture.Apply(); //this is done diffrent
     }
-
+    #endregion
+    
     //makes the end goal an area instead of singular node
     public void SetupGoalPositions(){
         for(int x = -1; x < 1; x++){
@@ -292,7 +301,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
 
 }
 

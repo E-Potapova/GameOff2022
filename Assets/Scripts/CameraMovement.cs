@@ -7,21 +7,22 @@ public class CameraMovement : MonoBehaviour
     //camera transform
     public Transform cameraTransform;
 
-    //camera component
-    //Camera cameraP;
-
     //camera cordinates
+    #region cameraCordinates
     float cameraX = 0;
     float cameraY = 0;
     float cameraZ = 0;
+    #endregion
 
+    #region cameraBounds
     //restrict camera movement bounds
     public float minX;
     public float maxX;
-
     public float minY;
     public float maxY;
+    #endregion
 
+    // how fast to move camera
     public float moveSpeed =1;
 
 
