@@ -7,11 +7,15 @@ using static CatManager;
 
 public class UIManager : MonoBehaviour
 {
+    //mouse location
     public Transform mouseTrans;
+
+    #region mouseCrosshairs
     public Image mouse;
     public Sprite cross1;
     public Sprite cross2;
     public Sprite box;
+    #endregion
     
     //check if over ui element
     public bool overCat;
@@ -19,11 +23,12 @@ public class UIManager : MonoBehaviour
     //switch ability
     public bool switchAbility;
 
-    //imported CaManager as static
-    //might need to change
+    //what ability is assigned to the button
     public Ability targetAbility;
 
     public UIButton currButton;
+
+    //button colors
     public Color selectTint;
     Color defColor;
 
@@ -32,10 +37,12 @@ public class UIManager : MonoBehaviour
         singleton = this;
     }
 
+    //hide default mouse cursor
     void Start(){
         Cursor.visible = false;
     }
 
+    //change mouse based off what its over
     public void Tick(){
         mouseTrans.transform.position = Input.mousePosition;
         if(overCat){
@@ -46,6 +53,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    //get ability when mouse clicks button, duh
     public void PressAbilityButton(UIButton button){
         if(currButton){
             currButton.buttonImg.color = defColor;

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerMouse : MonoBehaviour
 {
+    //this is no longer needed
 
     [SerializeField] private Camera mainCamera;
 
     private Vector3 mouseWorldCord;
-    public 
     // Start is called before the first frame update
     void Start()
     {

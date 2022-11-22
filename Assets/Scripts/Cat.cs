@@ -9,69 +9,94 @@ using UnityEngine;
 // otherwise it treats filled in pixels/nodes as a collision
 public class Cat : MonoBehaviour
 {
-    bool isInit;
+    // reference to sprite
+    public SpriteRenderer catSprite;
+
     // current node of sprite
     Node currNode;
     // location of node where sprite wants to move
     Node targetNode;
 
-    // can disable this later
+    // used to update the sprites current location
+    bool initLerp;
+
+    // location of sprite
+    Vector3 startPos;
+
+    #region catMovement
     // boolean function to allow the sprite to move
     public bool move;
     // direction to move
     public bool movingLeft;
-
-    //falling variables
-    public bool falling;
-    public bool isUmbrella;
-    public bool isDigFoward;
-
-    public bool isSafe = false;
-
-
-    // the movement speed of the sprite
-    public float lerpSpeed = 1;
-    // used to update the sprites current location
-    bool initLerp;
     // another speed variable i guess??
     float baseSpeed; 
+    // how high up cat can move in pixels
+    int heightMoveUp =3;
+    // the movement speed of the sprite
+    public float lerpSpeed = 1;
+    // location to move to
+    Vector3 targetPos;
+
+    // target location sprite wants to move to
+    // I reuse and reasign this alot might need to be carefull of that
+    int targetX;
+    int targetY;
+
+    #endregion
+
+    //falling variables
+    #region Falling
+    public bool falling;
     // fall speed
     float fallSpeed = 5f;
-    float umbrellaSpeed = 0.5f;
+    //howlong cat is falling
     float airTime =0;
+    #endregion
+
+    //umbrella ability
+    #region umbrella
+    //umbrella
+    public bool isUmbrella;
+    float umbrellaSpeed = 0.5f;
+    #endregion
+
+    //dig abilities
+    #region Dig
+    public bool isDigFoward;
     float digDownSpeed = 0.1f;
+    #endregion
+
+    //building abilities
+    #region Building
     float buildTime= 0.5f;
     float buildSpeed = 0.05f;
     int maxBuildAmount = 25;
     int builtAmount = 0;
     float bTimer = 0;
+    #endregion
+
+    //cat Goal
+    #region Goal Cat
+    public bool isSafe = false;
+    #endregion
+
+    
+    //keeptrack of all stop nodes, used by cat stopper
+    List<Node> stopNodes = new List<Node>();
 
     // check if on ground
+    #region ground check
     bool onGround;
     bool prevGround;
-    // location to move to
-    Vector3 targetPos;
-    // how high up cat can move
-    int heightMoveUp =3;
+    #endregion
+
+    float time;
+    bool isInit;
 
     //set cat current ability
     public CatManager.Ability currAbility;
 
-    // location of sprite
-    Vector3 startPos;
-    float time;
-
-    // reference to sprite
-    public SpriteRenderer catSprite;
-
     GameManager gameManager;
-
-    // target location sprite wants to move to
-    int targetX;
-    int targetY;
-
-    //keeptrack of all stop nodes
-    List<Node> stopNodes = new List<Node>();
 
     public void Init(GameManager gm) {
         gameManager = gm;
@@ -88,6 +113,7 @@ public class Cat : MonoBehaviour
 
     // Update is called once per frame
     // no longer is an update change to a public void tick
+    #region Cat abilities Assigning
     public void Tick(float delta) {
         if (!isInit) {
             return;
@@ -104,7 +130,7 @@ public class Cat : MonoBehaviour
                 Walk(delta);
                 break;
             case CatManager.Ability.stopper:
-                Stopper();
+                //play stop animation here or add stopper method
                 break;
             case CatManager.Ability.umbrella:
                 break;
@@ -124,6 +150,63 @@ public class Cat : MonoBehaviour
                 break;
         }
     }
+
+    public bool ChangeAbility(CatManager.Ability newAbility){
+
+        //set booleans to false
+        //isUmbrella = false;
+        //currAbility = newAbility;
+        switch(newAbility){
+            case CatManager.Ability.defaultWalk:
+                currAbility = newAbility;
+                //reset all the boolean abilities to false, might cause bug need to test
+                isDigFoward = false;
+                isUmbrella = false;
+
+                ClearStopNodes(); //this works correctly !!
+                break;
+            case CatManager.Ability.stopper:
+                if(prevGround){ //make sure we are on ground inorder to perform action
+                    FindStopNodes();
+                    currAbility = newAbility;
+                    return(true);
+                }
+                else{
+                    return(false);
+                }
+            case CatManager.Ability.umbrella:
+                isUmbrella = true;
+                break;
+            case CatManager.Ability.digDown:
+                if(prevGround){
+                    FindStopNodes();
+                    currAbility = newAbility;
+                    return(true);
+                }
+                else{
+                    return false;
+                }
+            case CatManager.Ability.digFoward:
+                isDigFoward = true;
+                break;
+            case CatManager.Ability.builder:
+                //play animation
+                currAbility = newAbility;
+                builtAmount = 0;
+                break;
+            case CatManager.Ability.filler:
+                currAbility = newAbility;
+                break;
+            case CatManager.Ability.dead:
+                currAbility = newAbility;
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+    #endregion
 
     //functions for diffrent cat abilities
     void Walk(float delta){
@@ -157,15 +240,7 @@ public class Cat : MonoBehaviour
         }
     }
 
-    void Stopper(){
-
-    }
-
-//might not actually need as it is same as walker code, basically
-    void Umbrella(){
-
-    }
-
+    #region Digging functions
     void DigDown(float delta){
         if(!initLerp){
             initLerp = true;
@@ -302,6 +377,7 @@ public class Cat : MonoBehaviour
         }
         return groundNodeList;
     }
+    #endregion
 
     void Builder(float delta){
         if(!initLerp){
@@ -355,70 +431,14 @@ public class Cat : MonoBehaviour
     //lerp is linear interpolation, basically this code moves the node location of the cat to the next node after a set time
     void LerpIntoPosition(float delta){
         time += delta * baseSpeed;
-            if (time > 1) {
-                time = 1;
-                initLerp = false;  
-                currNode = targetNode;
-            }
-
-            Vector3 tp = Vector3.Lerp(startPos, targetPos, time);
-            transform.position = tp;
-    }
-
-    public bool ChangeAbility(CatManager.Ability newAbility){
-
-        //set booleans to false
-        //isUmbrella = false;
-        //currAbility = newAbility;
-        switch(newAbility){
-            case CatManager.Ability.defaultWalk:
-                currAbility = newAbility;
-                //reset all the boolean abilities to false, might cause bug need to test
-                isDigFoward = false;
-                isUmbrella = false;
-
-                ClearStopNodes(); //this works correctly !!
-                break;
-            case CatManager.Ability.stopper:
-                if(prevGround){ //make sure we are on ground inorder to perform action
-                    FindStopNodes();
-                    currAbility = newAbility;
-                    return(true);
-                }
-                else{
-                    return(false);
-                }
-            case CatManager.Ability.umbrella:
-                isUmbrella = true;
-                break;
-            case CatManager.Ability.digDown:
-                if(prevGround){
-                    FindStopNodes();
-                    currAbility = newAbility;
-                    return(true);
-                }
-                else{
-                    return false;
-                }
-            case CatManager.Ability.digFoward:
-                isDigFoward = true;
-                break;
-            case CatManager.Ability.builder:
-                //play animation
-                currAbility = newAbility;
-                builtAmount = 0;
-                break;
-            case CatManager.Ability.filler:
-                currAbility = newAbility;
-                break;
-            case CatManager.Ability.dead:
-                currAbility = newAbility;
-                break;
-            default:
-                break;
+        if (time > 1) {
+            time = 1;
+            initLerp = false;  
+            currNode = targetNode;
         }
 
-        return true;
+        Vector3 tp = Vector3.Lerp(startPos, targetPos, time);
+        transform.position = tp;
     }
 
     bool Pathfind() { //change to bool to exit early
@@ -535,6 +555,7 @@ public class Cat : MonoBehaviour
         return (node.isEmpty);
     }
 
+    #region Stopper cat functions
     bool IsStop(int x, int y){
         Node node = gameManager.GetNode(x, y);
         if (node == null) {
@@ -565,5 +586,5 @@ public class Cat : MonoBehaviour
         }
         stopNodes.Clear();
     }
-
+    #endregion
 }
