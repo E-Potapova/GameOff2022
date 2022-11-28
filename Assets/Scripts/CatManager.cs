@@ -94,6 +94,9 @@ public class CatManager : MonoBehaviour
         catList.Add(cat);
         cat.move = true;
         catsSpawned++; //keep track of how many cats have been spawned
+
+        //play sound
+        FindObjectOfType<AudioManager>().Play("Meow 1");
     }
 
     //find the cat closest to the mouse
