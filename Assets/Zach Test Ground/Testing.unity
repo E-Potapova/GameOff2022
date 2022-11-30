@@ -354,7 +354,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ability: 1
-  buttonImg: {fileID: 166712490}
 --- !u!1 &227676351
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,7 +576,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ability: 3
-  buttonImg: {fileID: 482542020}
 --- !u!114 &482542019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -801,7 +799,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ability: 2
-  buttonImg: {fileID: 1234355950}
 --- !u!114 &1234355949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1017,7 +1014,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ability: 4
-  buttonImg: {fileID: 1359319470}
 --- !u!114 &1359319469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1329,7 +1325,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ability: 0
-  buttonImg: {fileID: 1513270983}
 --- !u!114 &1513270982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1477,7 +1472,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ability: 6
-  buttonImg: {fileID: 1530926218}
 --- !u!114 &1530926217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1608,7 +1602,6 @@ MonoBehaviour:
   levelRenderer: {fileID: 73225742}
   pixelsPerUnit: 64
   posOffset: 0.015625
-  editRadius: 6
   spawnTransform: {fileID: 1972873811}
   spawnPosition: {x: 0, y: 0, z: 0}
   goalTransform: {fileID: 389680720}
@@ -1645,8 +1638,9 @@ MonoBehaviour:
   maxCats: 3
   catsSafe: 0
   catsSpawned: 0
-  catPrefab: {fileID: 6314602453322243922, guid: 36042188a91e85546bbbac6eefcc0542, type: 3}
-  timeScale: 1
+  deadCatsCount: 0
+  maxDeadCats: 2
+  catPrefab: {fileID: 6314602453322243922, guid: b2a6a44d48b055d459e5c1ff60bb3721, type: 3}
   interval: 2
 --- !u!114 &1695553738
 MonoBehaviour:
@@ -1679,15 +1673,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseTrans: {fileID: 1082918247}
-  mouse: {fileID: 1082918248}
-  cross1: {fileID: 21300000, guid: ec068ab341eff1541bfa0bb7f8e02ce0, type: 3}
-  cross2: {fileID: 21300000, guid: 3b7efd3cb26ba6a4c9cf31a47ff1391a, type: 3}
-  box: {fileID: 21300000, guid: e85d40b9744cbc44daaab69a99a52daf, type: 3}
   overCat: 0
-  switchAbility: 0
-  targetAbility: 0
-  currButton: {fileID: 0}
-  selectTint: {r: 0.73634803, g: 0.8396226, b: 0.14653791, a: 0}
+  holdingMouseDown: 0
+  selectedAbility: 0
+  currButton: {fileID: 166712492}
 --- !u!1 &1972873810
 GameObject:
   m_ObjectHideFlags: 0
