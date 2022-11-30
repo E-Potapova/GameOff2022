@@ -6,24 +6,24 @@ using static CatManager;
 
 public class UIButton : MonoBehaviour
 {
-
-    //ui button elements go here
     public Ability ability;
-    public Image buttonImg;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //private Animator animator;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //private void Start()
+    //{
+    //    animator = GetComponent<Animator>();
+    //}
 
     public void Press(){
+        //Debug.Log("onClick");
+        //animator.SetBool("selected", true);
         UIManager.singleton.PressAbilityButton(this);
     }
+
+    //public void Deselect()
+    //{
+    //    Debug.Log("deselect");
+    //    animator.SetBool("selected", false);
+    //}
 }

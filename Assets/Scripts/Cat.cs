@@ -12,6 +12,8 @@ public class Cat : MonoBehaviour
     // reference to sprite
     public SpriteRenderer catSprite;
 
+    private Animator animator;
+
     // current node of sprite
     Node currNode;
     // location of node where sprite wants to move
@@ -103,6 +105,7 @@ public class Cat : MonoBehaviour
         PlaceOnNode();
         isInit = true;
         currAbility = CatManager.Ability.defaultWalk;
+        animator = GetComponent<Animator>();
     }
 
     // spawn cats
@@ -127,10 +130,11 @@ public class Cat : MonoBehaviour
         //call method for correct cat ability
         switch(currAbility){
             case CatManager.Ability.defaultWalk:
+                animator.SetBool("sitting", false);
                 Walk(delta);
                 break;
             case CatManager.Ability.stopper:
-                //play stop animation here or add stopper method
+                animator.SetBool("sitting", true);
                 break;
             case CatManager.Ability.umbrella:
                 break;
