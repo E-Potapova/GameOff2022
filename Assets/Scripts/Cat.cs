@@ -70,16 +70,23 @@ public class Cat : MonoBehaviour
 
     //building abilities
     #region Building
-    float buildTime= 0.5f;
+    //building up
+    float buildTime= 0.25f; //howfast cat builds new node
     float buildSpeed = 0.05f;
-    int maxBuildAmount = 25;
+    int maxBuildAmount = 50;
     int builtAmount = 0;
     float bTimer = 0;
+
+    //building foward
+    float buildFTime = 0.05f;
+    int maxBuildAmountF = 100;
+
     #endregion
 
     //cat Goal
     #region Goal Cat
     public bool isSafe = false;
+    public bool isDead = false;
     #endregion
 
     
@@ -144,10 +151,11 @@ public class Cat : MonoBehaviour
             case CatManager.Ability.digDown:
                 DigDown(delta);
                 break;
-            case CatManager.Ability.builder:
-                Builder(delta);
+            case CatManager.Ability.buildUp:
+                BuildUp(delta);
                 break;
-            case CatManager.Ability.filler:
+            case CatManager.Ability.buildFoward:
+                BuildFoward(delta);
                 break;
             default:
                 //default could just be set to walk
@@ -166,13 +174,17 @@ public class Cat : MonoBehaviour
                 //reset all the boolean abilities to false, might cause bug need to test
                 isDigFoward = false;
                 isUmbrella = false;
-
                 ClearStopNodes(); //this works correctly !!
                 break;
             case CatManager.Ability.stopper:
                 if(prevGround){ //make sure we are on ground inorder to perform action
                     FindStopNodes();
                     currAbility = newAbility;
+
+                    //counter for cats
+                    CatManager.singleton.catStopper -= 1;
+                    Debug.Log(CatManager.singleton.catStopper);
+                    
                     return(true);
                 }
                 else{
@@ -180,11 +192,19 @@ public class Cat : MonoBehaviour
                 }
             case CatManager.Ability.umbrella:
                 isUmbrella = true;
+                
+                //counter for cats
+                CatManager.singleton.catUmbrella -= 1;
+                Debug.Log(CatManager.singleton.catUmbrella);
+
                 break;
             case CatManager.Ability.digDown:
                 if(prevGround){
                     FindStopNodes();
                     currAbility = newAbility;
+                    //counter for cats
+                    CatManager.singleton.catDigDown -= 1;
+                    Debug.Log(CatManager.singleton.catDigDown);
                     return(true);
                 }
                 else{
@@ -192,17 +212,30 @@ public class Cat : MonoBehaviour
                 }
             case CatManager.Ability.digFoward:
                 isDigFoward = true;
+                //counter for cats
+                CatManager.singleton.catDigFoward -= 1;
+                Debug.Log(CatManager.singleton.catDigFoward);
                 break;
-            case CatManager.Ability.builder:
+            case CatManager.Ability.buildUp:
                 //play animation
                 currAbility = newAbility;
                 builtAmount = 0;
+                //counter for cats
+                CatManager.singleton.catBuildersUp -= 1;
+                Debug.Log(CatManager.singleton.catBuildersUp);
                 break;
-            case CatManager.Ability.filler:
+            case CatManager.Ability.buildFoward:
                 currAbility = newAbility;
+                builtAmount = 0;
+                //counter for cats
+                CatManager.singleton.catBuildersFoward -= 1;
+                Debug.Log(CatManager.singleton.catBuildersFoward);
                 break;
             case CatManager.Ability.dead:
                 currAbility = newAbility;
+                isDead = true;
+                gameObject.SetActive(false);
+                Debug.Log("Cat Died ");
                 break;
             default:
                 break;
@@ -383,7 +416,7 @@ public class Cat : MonoBehaviour
     }
     #endregion
 
-    void Builder(float delta){
+    void BuildUp(float delta){
         if(!initLerp){
             bTimer += delta;
             if(bTimer > buildTime){
@@ -416,9 +449,58 @@ public class Cat : MonoBehaviour
                 baseSpeed = buildSpeed/dist;
 
                 List<Node> buildNodes = new List<Node>();
-                for(int i = 0; i < 5; i++){
+                for(int i = 0; i < 10; i++){
                     int xHeight = targetX + i;
                     Node checkNode = gameManager.GetNode(xHeight, currNode.y);
+                    if(checkNode.isEmpty == true){
+                        buildNodes.Add(checkNode);
+                    }
+                }
+
+                gameManager.NodesToBuild(buildNodes);
+            }
+        }
+        else{
+            LerpIntoPosition(delta);
+        }
+    }
+
+    void BuildFoward(float delta){
+        if(!initLerp){
+            bTimer += delta;
+            if(bTimer > buildFTime){
+                bTimer = 0;
+                initLerp = true;
+                bool interupt = false; //make sure not to build through a wall
+                builtAmount++;
+
+                if(builtAmount > maxBuildAmountF){
+                    interupt = true;
+                }
+
+                int targetX = currNode.x;
+                //int targetY = currNode.y;
+
+                targetX = (movingLeft) ? targetX - 1 : targetX + 1;
+                //targetY = targetY; //only increase x
+
+
+                startPos = transform.position;
+                targetNode = gameManager.GetNode(targetX, currNode.y);
+
+                if(targetNode.isEmpty == false || interupt){
+                    ChangeAbility(CatManager.Ability.defaultWalk);
+                    return;
+                }
+
+                targetPos = gameManager.GetWorldPosFromNode(targetNode.x, targetNode.y);
+                float dist = Vector3.Distance(startPos, targetPos);
+                baseSpeed = buildSpeed/dist;
+
+                List<Node> buildNodes = new List<Node>();
+                for(int i = 0; i < 3; i++){
+                    int yHeight = currNode.y - i;
+                    Node checkNode = gameManager.GetNode(currNode.x +1, yHeight);
                     if(checkNode.isEmpty == true){
                         buildNodes.Add(checkNode);
                     }
@@ -443,13 +525,17 @@ public class Cat : MonoBehaviour
 
         Vector3 tp = Vector3.Lerp(startPos, targetPos, time);
         transform.position = tp;
+        //make sure cat doesnt fall out of map
+        if(transform.position.y < 0){
+            ChangeAbility(CatManager.Ability.dead);
+        }
     }
 
     bool Pathfind() { //change to bool to exit early
 
         if(currNode == null){
             targetPos = transform.position;
-            targetPos.y = -50;
+            targetPos.y = -50;//fall death height
             prevGround = onGround;
             return false;
         }
@@ -531,7 +617,7 @@ public class Cat : MonoBehaviour
                     else {
                         //if cat should dig 
                         if(isDigFoward){
-                            currAbility = CatManager.Ability.digFoward;
+                            currAbility = CatManager.Ability.digFoward; //cat acts as a walker until it needs to dig. 
                             //animation here
                             return(false);
                         }
@@ -584,7 +670,7 @@ public class Cat : MonoBehaviour
 
     //clear stopNodes list and set all nodes back to false for stopping
     public void ClearStopNodes(){
-        Debug.Log(stopNodes);
+        //Debug.Log(stopNodes);
         for(int i = 0; i < stopNodes.Count; i++){
             stopNodes[i].isStop = false;
         }

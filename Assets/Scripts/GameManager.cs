@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
             }
 
             //added this to make cats walk again when i tell them too
-            if(currCat.currAbility != CatManager.Ability.defaultWalk){
+            else if(currCat.currAbility != CatManager.Ability.defaultWalk){
                 currCat.ChangeAbility(uiManager.selectedAbility);
             }
         }
@@ -231,7 +231,6 @@ public class GameManager : MonoBehaviour
                 int targetY = goalNode.y + y;
 
                 Node tempNode = GetNode(targetX, targetY);
-
 
                 if(tempNode == null){
                     continue;

@@ -13,6 +13,9 @@ public class CatManager : MonoBehaviour
     List<Cat> safeCats = new List<Cat>();
     public int catsSafe;
     public int catsSpawned = 0;
+    List<Cat> deadCats = new List<Cat>();
+    public int deadCatsCount = 0;
+    public int maxDeadCats = 2;
     public GameObject catPrefab;
     private GameObject catsParent;
     #endregion
@@ -23,8 +26,19 @@ public class CatManager : MonoBehaviour
     float timer;
     #endregion
 
+    #region Ability counter
+    //when player runs out of that ability just disable the button...
+    public int catBuildersUp =0;
+    public int catBuildersFoward = 0;
+    public int catDigDown = 0;
+    public int catDigFoward = 0;
+    public int catUmbrella = 0;
+    public int catStopper = 0;
+    #endregion
+
     //win game condition
     bool win = false;
+    bool lose =false;
     
     public static CatManager singleton;
     void Awake(){
@@ -56,11 +70,16 @@ public class CatManager : MonoBehaviour
 
         //adding new stuff for removing units
         safeCats.Clear();
+        deadCats.Clear();
 
-        //go through all cats and check if they made it to the goal
+        //go through all cats and check if they made it to the goal, or are dead
         for(int i = 0; i < catList.Count; i++){
             if(catList[i].isSafe){
                 safeCats.Add(catList[i]);
+                continue;
+            }
+            else if(catList[i].isDead){
+                deadCats.Add(catList[i]);
                 continue;
             }
             catList[i].Tick(delta);
@@ -79,6 +98,19 @@ public class CatManager : MonoBehaviour
             win = true;
             Debug.Log("You Win!");
         }
+        
+        for(int i =0; i< deadCats.Count; i++){
+            if(catList.Contains(deadCats[i])){
+                catList.Remove(deadCats[i]);
+                deadCatsCount++;
+            }
+        }
+
+        //if too many cats died you lose
+        if(deadCatsCount >= maxDeadCats && !lose){
+            lose = true;
+            Debug.Log("You Lose");
+        }
 
     }
 
@@ -93,7 +125,8 @@ public class CatManager : MonoBehaviour
         catsSpawned++; //keep track of how many cats have been spawned
 
         //play sound
-        FindObjectOfType<AudioManager>().Play("Meow 1");
+        //FindObjectOfType<AudioManager>().Play("Meow 1");
+        AudioManager.instance.Play("Meow 1");
     }
 
     //find the cat closest to the mouse
@@ -114,9 +147,9 @@ public class CatManager : MonoBehaviour
         return(closestCat);
 
     }
-
+   
     public enum Ability{
         //enter the abilities here
-        defaultWalk, stopper, umbrella, digFoward, digDown, dead, builder, filler
+        defaultWalk, stopper, umbrella, digFoward, digDown, dead, buildUp, buildFoward
     }
 }
