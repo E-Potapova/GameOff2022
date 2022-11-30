@@ -3,12 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Mouse
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Cats
+  - 
   - Water
   - UI
   - 
@@ -40,4 +41,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Level
+    uniqueID: 145135003
+    locked: 0
+  - name: EndPos
+    uniqueID: 3887413131
+    locked: 0
+  - name: Cats
+    uniqueID: 1977247949
+    locked: 0
+  - name: SpawnPos
+    uniqueID: 4041365601
     locked: 0

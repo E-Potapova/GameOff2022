@@ -21,14 +21,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     // mouse input support
-    #region mouse input
     Vector3 mousePos;
-    Node currNode;
-    Node prevNode;
-    int delRadius = 6;
-    //make the delete a circle instead of square
-    public float editRadius = 6;
-    #endregion
 
     // spawn location and goal for cats
     #region spawn n Goal
@@ -58,8 +51,6 @@ public class GameManager : MonoBehaviour
     //make GameManger singleton, restricts class to only one instance
     public static GameManager singleton;
     
-    //Ui stuff
-    private bool overUIElement;
 
     // tells gamemanager to start
     void Awake()
@@ -114,75 +105,24 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        overUIElement = EventSystem.current.IsPointerOverGameObject();
         GetMousePosition();
+        if (Input.GetMouseButton(0)) // primary button (left click)
+            uiManager.HandleMouseClick();
         CheckForCat();
         uiManager.Tick();
         HandleCat();
         BuildListOfNodes();
-        if (Input.GetMouseButton(1)) // primary button (left click)
-            HandleMouseClick();
     }
 
-    #region Mouse functions
     void GetMousePosition()
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0f;
-        currNode = GetNodeFromWorldPos(mousePos);
     }
-    void HandleMouseClick()
-    {
-        if (currNode == null) return;
-
-        if (currNode != prevNode) // don't repeat if didn't click in new place
-        {
-            prevNode = currNode;
-
-            // delete part of map around where mouse was clicked
-            Color col = Color.white;
-            col.a = 0; // transparent
-
-            //makes it delete in a circle
-            Vector3 center = GetWorldPosFromNode(currNode);
-            float radius = editRadius *posOffset;
-
-            for (int x = -delRadius; x < delRadius; x++){
-                for (int y = -delRadius; y < delRadius; y++){
-                    int textureX = x + currNode.x;
-                    int textureY = y + currNode.y;
-
-                    // check if node is in range of radius, to remove
-                    float dist = Vector3.Distance(center, GetWorldPosFromNode(textureX, textureY));
-                    if(dist > radius){
-                        continue;
-                    }
-
-                    // check node exist, to prevent wrapping fixes this bug
-                    // there is a bug where it deletes from the oppisite side too
-                    Node node = GetNode(textureX, textureY);
-                    if(node == null){
-                        continue; //skip this itteration of loop
-                    }
-                    node.isEmpty = true;
-
-                    //test building
-                    //change back to col
-                    tempTexture.SetPixel(textureX, textureY, col);
-
-                    //for drawing
-                    //tempTexture.SetPixel(textureX, textureY, buildColor);
-                }
-            }
-
-            tempTexture.Apply(); // update texture after changes
-        }
-    }
-    #endregion
    
     #region Cat Handelers
     void CheckForCat(){
-        currCat = catManager.GetClosest(mousePos);
+        currCat = catManager.GetClosestCat(mousePos);
         if (currCat == null){
             uiManager.overCat = false;
             return;
@@ -201,12 +141,12 @@ public class GameManager : MonoBehaviour
             // } i commented this out so i can make cats walk again
             
             if(currCat.currAbility == CatManager.Ability.defaultWalk){
-                currCat.ChangeAbility(uiManager.targetAbility);
+                currCat.ChangeAbility(uiManager.selectedAbility);
             }
 
             //added this to make cats walk again when i tell them too
             if(currCat.currAbility != CatManager.Ability.defaultWalk){
-                currCat.ChangeAbility(uiManager.targetAbility);
+                currCat.ChangeAbility(uiManager.selectedAbility);
             }
         }
     }

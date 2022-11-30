@@ -7,30 +7,18 @@ using static CatManager;
 
 public class UIManager : MonoBehaviour
 {
-    //mouse location
     public Transform mouseTrans;
-
-    #region mouseCrosshairs
-    public Image mouse;
-    public Sprite cross1;
-    public Sprite cross2;
-    public Sprite box;
-    #endregion
     
-    //check if over ui element
     public bool overCat;
-
-    //switch ability
-    public bool switchAbility;
+    public bool holdingMouseDown;
 
     //what ability is assigned to the button
-    public Ability targetAbility;
+    public Ability selectedAbility;
 
     public UIButton currButton;
 
-    //button colors
-    public Color selectTint;
-    Color defColor;
+    private Animator animator;
+
 
     public static UIManager singleton;
     void Awake(){
@@ -40,29 +28,51 @@ public class UIManager : MonoBehaviour
     //hide default mouse cursor
     void Start(){
         Cursor.visible = false;
+        animator = GameObject.FindGameObjectWithTag("Mouse").GetComponent<Animator>();
     }
 
     //change mouse based off what its over
     public void Tick(){
-        mouseTrans.transform.position = Input.mousePosition;
-        if(overCat){
-            mouse.sprite = box;
+        // shift so cursor appears in correct position
+        mouseTrans.transform.position = Input.mousePosition + new Vector3(35, -20, 0);
+
+        if (overCat && currButton){
+            // hovering over a cat and have power/button selected
+            animator.SetBool("abilitySelected", true);
+            // now want sprite centered on mouse corner
+            mouseTrans.transform.position += new Vector3(-35, 20, 0);
         }
-        else{
-            mouse.sprite = cross1;
+        else
+        {
+            animator.SetBool("abilitySelected", false);
         }
+
+        if (holdingMouseDown)
+        {
+            animator.SetBool("holdingMouseDown", true);
+            holdingMouseDown = false;
+        }
+        else
+        {
+            animator.SetBool("holdingMouseDown", false);
+        }
+    }
+
+    public void HandleMouseClick()
+    {
+        holdingMouseDown = true;
+        // this occurs before UIButton's OnClick occurs
+        // so it only sets button to null if we are not pressing on a button
+        currButton = null;
     }
 
     //get ability when mouse clicks button, duh
     public void PressAbilityButton(UIButton button){
-        if(currButton){
-            currButton.buttonImg.color = defColor;
-        }
-
+        //if (currButton)
+        //{
+        //    currButton.Deselect();
+        //}
         currButton = button;
-        defColor = currButton.buttonImg.color;
-        currButton.buttonImg.color = selectTint;
-
-        targetAbility = currButton.ability;
+        selectedAbility = button.ability;
     }
 }
