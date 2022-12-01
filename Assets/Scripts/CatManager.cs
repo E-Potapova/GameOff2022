@@ -40,6 +40,9 @@ public class CatManager : MonoBehaviour
     public int catStopper = 5;
     #endregion
 
+    private Animator spawnAnimator;
+    private Animator goalAnimator;
+
     //win game condition
     bool win = false;
     bool lose =false;
@@ -55,6 +58,9 @@ public class CatManager : MonoBehaviour
         catsParent = new GameObject();
         catsParent.name = "Cats";
         catsParent.transform.position = GameManager.singleton.spawnPosition;
+
+        spawnAnimator = GameObject.FindGameObjectWithTag("Spawn").GetComponent<Animator>();
+        goalAnimator = GameObject.FindGameObjectWithTag("Goal").GetComponent<Animator>();
     }
 
 
@@ -96,6 +102,7 @@ public class CatManager : MonoBehaviour
                 if(catList.Contains(safeCats[i])){
                     catList.Remove(safeCats[i]);
                     catsSafe++; //keep track of cats that made it to the goal
+                    goalAnimator.SetTrigger("getCat");
                 }
             }
 
@@ -130,6 +137,7 @@ public class CatManager : MonoBehaviour
 
     //this spawns cats at the spawn point, hence the name
     void SpawnCat() {
+        spawnAnimator.SetTrigger("spawnCat");
         GameObject gameObj = Instantiate(catPrefab);
         gameObj.transform.parent = catsParent.transform;
         Cat cat = gameObj.GetComponent<Cat>();

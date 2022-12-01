@@ -37,13 +37,13 @@ public class UIManager : MonoBehaviour
             HandleMouseClick();
 
         // shift so cursor appears in correct position
-        mouseTrans.transform.position = Input.mousePosition + new Vector3(35, -20, 0);
+        mouseTrans.transform.position = Input.mousePosition + new Vector3(15, -15, 0);
 
         if (overCat && currButton){
             // hovering over a cat and have power/button selected
             animator.SetBool("abilitySelected", true);
             // now want sprite centered on mouse corner
-            mouseTrans.transform.position += new Vector3(-35, 20, 0);
+            mouseTrans.transform.position += new Vector3(-15, 15, 0);
         }
         else
         {
@@ -68,10 +68,16 @@ public class UIManager : MonoBehaviour
 
     //get ability when mouse clicks button, duh
     public void PressAbilityButton(UIButton button){
-        //if (currButton)
-        //{
-        //    currButton.Deselect();
-        //}
+        if (currButton)
+        {
+            currButton.Deselect();
+            if (currButton == button)
+            {
+                currButton = null;
+                selectedAbility = Ability.pet;
+                return;
+            }
+        }
         currButton = button;
         selectedAbility = button.ability;
     }
