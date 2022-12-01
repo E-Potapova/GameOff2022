@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MenuMain : MonoBehaviour
 {
+    private Animator animator;
+
     private void Update()
     {
         UIManager.singleton.Tick();    
@@ -20,5 +22,15 @@ public class MenuMain : MonoBehaviour
     {
         Debug.Log("Game has been Quit");
         Application.Quit();
+    }
+
+    public void LogoClick()
+    {
+        if (!animator)
+        {
+            animator = GameObject.Find("Logo").GetComponent<Animator>();
+        }
+        animator.SetTrigger("click");
+        AudioManager.instance.Play("Meow 1");
     }
 }
