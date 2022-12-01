@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1d443a5e8aa630247b27eddc94977983
+guid: 86b08b1cda20dec429e19faeecbfed72
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -129,64 +129,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_powerup_default_0
+      name: cat_build_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bfe7b92c899acc54a8f95ff619038346
-      internalID: -23451988
+      spriteID: fc4b7e657127bc84dbd5458dc7d4eaf9
+      internalID: 620758169
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_powerup_default_1
+      name: cat_build_1
       rect:
         serializedVersion: 2
-        x: 64
+        x: 32
         y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 32
+        height: 32
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42d5b319614e1a64e92214541057df6a
-      internalID: 1539745397
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: UI_powerup_default_2
-      rect:
-        serializedVersion: 2
-        x: 128
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 56cc17e73e32a994a9a0fd0c2f4d5441
-      internalID: -1534478286
+      spriteID: 726d66b4028b5ea45a03018e32c4a58b
+      internalID: 98330449
       vertices: []
       indices: 
       edges: []
@@ -202,9 +181,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      UI_powerup_default_0: -23451988
-      UI_powerup_default_1: 1539745397
-      UI_powerup_default_2: -1534478286
+      cat_build_0: 620758169
+      cat_build_1: 98330449
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

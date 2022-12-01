@@ -9,6 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: d43f01dac5c226848bc7c4c7bd69c3c3
   - enabled: 1
+    path: Assets/Scenes/Tutorial Slowfall.unity
+    guid: 3ed09e4e91e1ba34a8f434985b3b32a9
+  - enabled: 1
     path: Assets/Scenes/Tutorial Dig.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Tutorial Build.unity
+    guid: 0771ab7e6b0847f449e47e156e3a21ff
+  - enabled: 1
+    path: Assets/Scenes/EndMenu.unity
+    guid: f7fcaafca88c7e440ba9f249152455be
   m_configObjects: {}

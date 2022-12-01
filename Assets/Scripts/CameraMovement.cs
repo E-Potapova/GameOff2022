@@ -29,7 +29,6 @@ public class CameraMovement : MonoBehaviour
     {
         cam = GetComponent<Camera>();
         cameraTransform = GetComponent<Transform>();
-        moveSpeed = moveSpeed /100;
     }
 
     // Update is called once per frame
