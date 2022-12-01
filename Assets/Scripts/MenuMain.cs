@@ -6,6 +6,10 @@ public class MenuMain : MonoBehaviour
 {
     private Animator animator;
 
+    private void Start() {
+        AudioManager.instance.Play("BackgroundMusic");
+    }
+
     private void Update()
     {
         UIManager.singleton.Tick();    

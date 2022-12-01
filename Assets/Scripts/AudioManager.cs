@@ -56,9 +56,9 @@ public class AudioManager : MonoBehaviour
     }
 
     //used in my temp start menu
-    void Start(){
-        Play("BackgroundMusic");
-    }
+    // void Start(){
+    //     Play("BackgroundMusic");
+    // }
 
     // Update is called once per frame
     public void Play(string name)

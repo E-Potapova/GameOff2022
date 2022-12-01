@@ -309,10 +309,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f38ba74f4239ffb4c9cb1996f3a8c514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minX: 2
-  maxX: 25
-  minY: 0
-  maxY: 10
+  minX: 4
+  maxX: 14
+  minY: 3
+  maxY: 5.5
   minZoom: 1
   maxZoom: 4
   moveSpeed: 1
@@ -821,5 +821,29 @@ PrefabInstance:
       propertyPath: catPrefab
       value: 
       objectReference: {fileID: 6314602453322243922, guid: 36042188a91e85546bbbac6eefcc0542, type: 3}
+    - target: {fileID: 7242346271650910739, guid: b77291cf395d3364c8727ff16610b178, type: 3}
+      propertyPath: catDigDown
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7242346271650910739, guid: b77291cf395d3364c8727ff16610b178, type: 3}
+      propertyPath: catStopper
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7242346271650910739, guid: b77291cf395d3364c8727ff16610b178, type: 3}
+      propertyPath: catUmbrella
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7242346271650910739, guid: b77291cf395d3364c8727ff16610b178, type: 3}
+      propertyPath: catDigFoward
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7242346271650910739, guid: b77291cf395d3364c8727ff16610b178, type: 3}
+      propertyPath: catBuildersUp
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7242346271650910739, guid: b77291cf395d3364c8727ff16610b178, type: 3}
+      propertyPath: catBuildersFoward
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b77291cf395d3364c8727ff16610b178, type: 3}

@@ -73,7 +73,7 @@ public class Cat : MonoBehaviour
     //building up
     float buildTime= 0.25f; //howfast cat builds new node
     float buildSpeed = 0.05f;
-    int maxBuildAmount = 50;
+    int maxBuildAmount = 75;
     int builtAmount = 0;
     float bTimer = 0;
 
@@ -328,7 +328,7 @@ public class Cat : MonoBehaviour
         List<Node> groundNodeList = new List<Node>();
 
         //also check the x nodes to dig a wide tunnel
-        for(int x = -5; x < 5; x++){
+        for(int x = -10; x < 10; x++){
             int targetX = currNode.x +x;
             for(int y = 0; y < 2; y++){ // check nodes below cat
                 //make it dig circular not square
@@ -397,7 +397,7 @@ public class Cat : MonoBehaviour
         List<Node> groundNodeList = new List<Node>();
 
         //change y to loop to cat height, this is how tall of tunnel to dig
-        for(int y = 0; y< 15; y++){
+        for(int y = 0; y< 25; y++){
             for(int x =0; x < 3; x++){
                 // if(x==2){ //makes dig circular
                 //     if(y == 0 || y ==6){
@@ -458,7 +458,7 @@ public class Cat : MonoBehaviour
                 baseSpeed = buildSpeed/dist;
 
                 List<Node> buildNodes = new List<Node>();
-                for(int i = 0; i < 10; i++){
+                for(int i = 0; i < 15; i++){
                     int xHeight = targetX + i;
                     Node checkNode = gameManager.GetNode(xHeight, currNode.y);
                     if(checkNode.isEmpty == true){
