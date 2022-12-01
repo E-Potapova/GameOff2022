@@ -24,7 +24,7 @@ public class CatManager : MonoBehaviour
     float delta;
     public float interval =2;
     float timer;
-    public float spawnBuffer = 5;
+    public float spawnBuffer = 10;
     float spawnBufferTime = 0;
 
     public bool beginGame = false;
@@ -43,6 +43,7 @@ public class CatManager : MonoBehaviour
     //win game condition
     bool win = false;
     bool lose =false;
+    public GameObject winLoseScreen;
     
     public static CatManager singleton;
     void Awake(){
@@ -102,6 +103,8 @@ public class CatManager : MonoBehaviour
             if(catsSafe == catsSpawned && !win){
                 win = true;
                 Debug.Log("You Win!");
+                //display win screen 
+                Instantiate(winLoseScreen);//create object
             }
             
             for(int i =0; i< deadCats.Count; i++){
@@ -115,6 +118,8 @@ public class CatManager : MonoBehaviour
             if(deadCatsCount >= maxDeadCats && !lose){
                 lose = true;
                 Debug.Log("You Lose");
+                //display lose screen
+                Instantiate(winLoseScreen);//create object
             }
         }
     }

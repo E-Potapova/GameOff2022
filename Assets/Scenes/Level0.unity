@@ -584,6 +584,7 @@ MonoBehaviour:
   catDigFoward: 5
   catUmbrella: 5
   catStopper: 5
+  winLoseScreen: {fileID: 8201409090392814809, guid: 267d1ca14a1f4314893cc6b3cd1999ee, type: 3}
 --- !u!1 &425209274
 GameObject:
   m_ObjectHideFlags: 0
