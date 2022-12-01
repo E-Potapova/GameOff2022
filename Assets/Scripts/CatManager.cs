@@ -104,7 +104,9 @@ public class CatManager : MonoBehaviour
                 win = true;
                 Debug.Log("You Win!");
                 //display win screen 
-                Instantiate(winLoseScreen);//create object
+                GameObject menu = Instantiate(winLoseScreen);//create object
+                MenuPause script = menu.GetComponent<MenuPause>();
+                script.DisplayWinText();
             }
             
             for(int i =0; i< deadCats.Count; i++){
@@ -117,9 +119,11 @@ public class CatManager : MonoBehaviour
             //if too many cats died you lose
             if(deadCatsCount >= maxDeadCats && !lose){
                 lose = true;
-                Debug.Log("You Lose");
+                Debug.Log("You Lose :(");
                 //display lose screen
-                Instantiate(winLoseScreen);//create object
+                GameObject menu = Instantiate(winLoseScreen);//create object
+                MenuPause script = menu.GetComponent<MenuPause>();
+                script.DisplayLoseText();
             }
         }
     }
