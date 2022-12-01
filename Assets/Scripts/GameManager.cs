@@ -151,18 +151,7 @@ public class GameManager : MonoBehaviour
         }
 
         if(Input.GetMouseButtonUp(0)){
-            // if(uiManager.targetAbility == CatManager.Ability.defaultWalk){
-            //     return;
-            // } i commented this out so i can make cats walk again
-            
-            if(currCat.currAbility == CatManager.Ability.defaultWalk){
-                currCat.ChangeAbility(uiManager.selectedAbility);
-            }
-
-            //added this to make cats walk again when i tell them too
-            else if(currCat.currAbility != CatManager.Ability.defaultWalk){
-                currCat.ChangeAbility(uiManager.selectedAbility);
-            }
+            currCat.ChangeAbility(uiManager.selectedAbility);
         }
     }
     #endregion

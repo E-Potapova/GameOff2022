@@ -63,7 +63,8 @@ public class UIManager : MonoBehaviour
         holdingMouseDown = true;
         // this occurs before UIButton's OnClick occurs
         // so it only sets button to null if we are not pressing on a button
-        currButton = null;
+        //currButton = null;
+        //selectedAbility = Ability.pet;
     }
 
     //get ability when mouse clicks button, duh
