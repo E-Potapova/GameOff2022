@@ -166,10 +166,14 @@ public class Cat : MonoBehaviour
     }
 
     public bool ChangeAbility(CatManager.Ability newAbility){
+        //play a noise
+        if(newAbility != CatManager.Ability.dead){
+            AudioManager.instance.PlayRandPurr();
+        }
+        
 
         //set booleans to false
         //isUmbrella = false;
-        //currAbility = newAbility;
         switch(newAbility){
             case CatManager.Ability.defaultWalk:
                 currAbility = newAbility;
@@ -235,7 +239,10 @@ public class Cat : MonoBehaviour
                 break;
             case CatManager.Ability.dead:
                 currAbility = newAbility;
+                AudioManager.instance.Play("Death");
                 isDead = true;
+
+                //deactivate after animation plays
                 gameObject.SetActive(false);
                 Debug.Log("Cat Died ");
                 break;

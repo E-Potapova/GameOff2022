@@ -45,15 +45,119 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
-  - name: Meow 1
-    clip: {fileID: 8300000, guid: ac3d39c515876cd4fb29ea3f5ed98ec1, type: 3}
-    volume: 0.593
+  - name: BackgroundMusic
+    clip: {fileID: 8300000, guid: 02daa37f835bfea45a7670885b1b4e85, type: 3}
+    volume: 0.084
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Death
+    clip: {fileID: 8300000, guid: fe44eb0975d605b48854472c028b125e, type: 3}
+    volume: 0.5
     pitch: 1
     loop: 0
     source: {fileID: 0}
-  - name: BackgroundMusic
-    clip: {fileID: 8300000, guid: 02daa37f835bfea45a7670885b1b4e85, type: 3}
-    volume: 0.107
+  meows:
+  - name: Meow1
+    clip: {fileID: 8300000, guid: e6b0097c9c1ea28498dc3de00991e479, type: 3}
+    volume: 0.5
     pitch: 1
-    loop: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow2
+    clip: {fileID: 8300000, guid: 1a7737200f689724a805cc71a92238b9, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow3
+    clip: {fileID: 8300000, guid: bebd1aa8443877a4398963ec647cb448, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow4
+    clip: {fileID: 8300000, guid: ba1cc5270bc165e4d93f744dc93cf99b, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow5
+    clip: {fileID: 8300000, guid: cff25ae4ce3721d409fa4a5e0e109905, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow6
+    clip: {fileID: 8300000, guid: f190e4c31b2bb0f47b9dfbb71c0c6a31, type: 3}
+    volume: 0.242
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow7
+    clip: {fileID: 8300000, guid: e546e7c33b49f094d926cebf7b25b403, type: 3}
+    volume: 0.242
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow8
+    clip: {fileID: 8300000, guid: ac3d39c515876cd4fb29ea3f5ed98ec1, type: 3}
+    volume: 0.242
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow9
+    clip: {fileID: 8300000, guid: 479a7c3f20c425e47ae77d6a7cb4305c, type: 3}
+    volume: 0.242
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow10
+    clip: {fileID: 8300000, guid: d8457dda0fb745a4099046121e38c18a, type: 3}
+    volume: 0.242
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Meow11
+    clip: {fileID: 8300000, guid: fc4df65db3ad6e847816eded55b054bf, type: 3}
+    volume: 0.242
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  purrs:
+  - name: Purr1
+    clip: {fileID: 8300000, guid: 763edb87a6302cd4db16113608d3d59f, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Purr2
+    clip: {fileID: 8300000, guid: 732814eaa2de3654684e40cfd5831e36, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Purr3
+    clip: {fileID: 8300000, guid: d1d94c7f51890fa4ba6c461b3daacc1b, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Purr4
+    clip: {fileID: 8300000, guid: de58b39148223bf4089886f538c16b0f, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Purr5
+    clip: {fileID: 8300000, guid: 98257892cd3d2664580bfb06232861b8, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Purr6
+    clip: {fileID: 8300000, guid: 22b9e54bfe59ed9499f0ab3043272bae, type: 3}
+    volume: 0.345
+    pitch: 1
+    loop: 0
     source: {fileID: 0}
