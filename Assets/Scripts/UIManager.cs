@@ -33,6 +33,9 @@ public class UIManager : MonoBehaviour
 
     //change mouse based off what its over
     public void Tick(){
+        if (Input.GetMouseButton(0)) // primary button (left click)
+            HandleMouseClick();
+
         // shift so cursor appears in correct position
         mouseTrans.transform.position = Input.mousePosition + new Vector3(35, -20, 0);
 
@@ -61,10 +64,6 @@ public class UIManager : MonoBehaviour
     public void HandleMouseClick()
     {
         holdingMouseDown = true;
-        // this occurs before UIButton's OnClick occurs
-        // so it only sets button to null if we are not pressing on a button
-        //currButton = null;
-        //selectedAbility = Ability.pet;
     }
 
     //get ability when mouse clicks button, duh

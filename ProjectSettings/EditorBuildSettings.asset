@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Zach Test Ground/StartMenu.unity
     guid: 1f9a5ed418bb3ae4685872c48307385a
   - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: d43f01dac5c226848bc7c4c7bd69c3c3
+  - enabled: 1
     path: Assets/Scenes/Level0.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1

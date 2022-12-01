@@ -50,7 +50,7 @@ public class Cat : MonoBehaviour
     #region Falling
     public bool falling;
     // fall speed
-    float fallSpeed = 5f;
+    float fallSpeed = 2.5f;
     //howlong cat is falling
     float airTime =0;
     #endregion
@@ -144,6 +144,8 @@ public class Cat : MonoBehaviour
                 animator.SetBool("sitting", true);
                 break;
             case CatManager.Ability.umbrella:
+                animator.SetBool("falling", false);
+                animator.SetBool("slowFalling", true);
                 break;
             case CatManager.Ability.digFoward:
                 DigFoward(delta);
@@ -555,6 +557,17 @@ public class Cat : MonoBehaviour
 
         //if node below sprite is air fall
         if (downIsAir) { //cat is falling
+            if (airTime > 10)
+            {
+                if (isUmbrella)
+                {
+                    animator.SetBool("slowFalling", true);
+                }
+                else
+                {
+                    animator.SetBool("falling", true);
+                }
+            }
             targetX = currNode.x;
             targetY -=1;
             airTime++;
@@ -568,9 +581,11 @@ public class Cat : MonoBehaviour
         else { //cat is on ground
             //if node infront of sprite is air move foward
             onGround = true;
-            
+            animator.SetBool("falling", false);
+            animator.SetBool("slowFalling", false);
+
             //check if cat fell to far and is now dead
-            if(onGround && !prevGround){
+            if (onGround && !prevGround){
                 if(airTime > 80 && !isUmbrella){
                     targetNode = currNode;
                     ChangeAbility(CatManager.Ability.dead);

@@ -113,14 +113,12 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         GetMousePosition();
-        if (Input.GetMouseButton(0)) // primary button (left click)
-            uiManager.HandleMouseClick();
             
-        if(Input.GetKeyDown(KeyCode.Escape) && !isPaused){
+        if(Input.GetKeyDown(KeyCode.Space) && !isPaused){
             Instantiate(pauseMenu);//create object 
             isPaused = true;
         }
-        else if(Input.GetKeyDown(KeyCode.Escape)){
+        else if(Input.GetKeyDown(KeyCode.Space)){
             isPaused = false;
         }
         CheckForCat();
