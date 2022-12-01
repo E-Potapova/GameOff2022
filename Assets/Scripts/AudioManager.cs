@@ -85,7 +85,7 @@ public class AudioManager : MonoBehaviour
     }
 
     public void PlayRandPurr(){
-        int val = UnityEngine.Random.Range(0, purrs.Length) -1;
+        int val = UnityEngine.Random.Range(0, purrs.Length-1);
         Sound purr = purrs[val];
         if(purr ==null){
             Debug.Log("Sound: " + val + " not found:(");
