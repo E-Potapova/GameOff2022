@@ -167,6 +167,27 @@ public class CatManager : MonoBehaviour
 
     }
    
+    public int GetAbilityCount(Ability ability)
+    {
+        switch(ability)
+        {
+            case (Ability.stopper):
+                return catStopper;
+            case (Ability.umbrella):
+                return catUmbrella;
+            case (Ability.digFoward):
+                return catDigFoward;
+            case (Ability.digDown):
+                return catDigDown;
+            case (Ability.buildUp):
+                return catBuildersUp;
+            case (Ability.buildFoward):
+                return catBuildersFoward;
+            default:
+                return 1;
+        }
+    }
+
     public enum Ability{
         //enter the abilities here
         defaultWalk, stopper, umbrella, digFoward, digDown, dead, buildUp, buildFoward, pet
