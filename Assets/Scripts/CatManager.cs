@@ -12,6 +12,7 @@ public class CatManager : MonoBehaviour
     List<Cat> catList = new List<Cat>();
     List<Cat> safeCats = new List<Cat>();
     public int catsSafe;
+    public int catsToWin;
     public int catsSpawned = 0;
     List<Cat> deadCats = new List<Cat>();
     public int deadCatsCount = 0;
@@ -24,7 +25,7 @@ public class CatManager : MonoBehaviour
     float delta;
     public float interval =2;
     float timer;
-    public float spawnBuffer = 10;
+    private float spawnBuffer = 5;
     float spawnBufferTime = 0;
     #endregion
 
@@ -105,7 +106,7 @@ public class CatManager : MonoBehaviour
             }
 
             //if enough cats made it to goal you win!!
-            if(catsSafe == catsSpawned && !win){
+            if(catsSafe == catsToWin && !win){
                 win = true;
                 Debug.Log("You Win!");
                 //display win screen 

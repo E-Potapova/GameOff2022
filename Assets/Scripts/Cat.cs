@@ -35,7 +35,7 @@ public class Cat : MonoBehaviour
     // how high up cat can move in pixels
     int heightMoveUp =3;
     // the movement speed of the sprite
-    public float lerpSpeed = 1;
+    public float lerpSpeed = 1.5f;
     // location to move to
     Vector3 targetPos;
 
@@ -53,6 +53,7 @@ public class Cat : MonoBehaviour
     float fallSpeed = 2.5f;
     //howlong cat is falling
     float airTime =0;
+    private int fallTimeToDeath = 110;
     #endregion
 
     //umbrella ability
@@ -138,6 +139,10 @@ public class Cat : MonoBehaviour
         switch(currAbility){
             case CatManager.Ability.defaultWalk:
                 animator.SetBool("sitting", false);
+                animator.SetBool("digging", false);
+                animator.SetBool("building", false);
+                animator.SetBool("diggingWalking", false);
+                animator.SetBool("hasUmbrella", false);
                 Walk(delta);
                 break;
             case CatManager.Ability.stopper:
@@ -148,15 +153,19 @@ public class Cat : MonoBehaviour
                 animator.SetBool("slowFalling", true);
                 break;
             case CatManager.Ability.digFoward:
+                animator.SetBool("digging", true);
                 DigFoward(delta);
                 break;
             case CatManager.Ability.digDown:
+                animator.SetBool("digging", true);
                 DigDown(delta);
                 break;
             case CatManager.Ability.buildUp:
+                animator.SetBool("building", true);
                 BuildUp(delta);
                 break;
             case CatManager.Ability.buildFoward:
+                animator.SetBool("building", true);
                 BuildFoward(delta);
                 break;
             default:
@@ -198,7 +207,8 @@ public class Cat : MonoBehaviour
                 }
             case CatManager.Ability.umbrella:
                 isUmbrella = true;
-                
+                animator.SetBool("hasUmbrella", true);
+
                 //counter for cats
                 CatManager.singleton.catUmbrella -= 1;
                 Debug.Log(CatManager.singleton.catUmbrella);
@@ -218,6 +228,7 @@ public class Cat : MonoBehaviour
                 }
             case CatManager.Ability.digFoward:
                 isDigFoward = true;
+                animator.SetBool("diggingWalking", true);
                 //counter for cats
                 CatManager.singleton.catDigFoward -= 1;
                 Debug.Log(CatManager.singleton.catDigFoward);
@@ -593,7 +604,7 @@ public class Cat : MonoBehaviour
 
             //check if cat fell to far and is now dead
             if (onGround && !prevGround){
-                if(airTime > 80 && !isUmbrella){
+                if(airTime > fallTimeToDeath && !isUmbrella){
                     targetNode = currNode;
                     ChangeAbility(CatManager.Ability.dead);
                     prevGround = onGround;
