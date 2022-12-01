@@ -88,8 +88,8 @@ Transform:
   m_GameObject: {fileID: 5618052799771884338}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 7.8255615, y: -0.53826904, z: 8.551278}
-  m_LocalScale: {x: 5, y: 5, z: 0}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 3, y: 3, z: 0}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5618052798967931120}
   m_Father: {fileID: 0}
@@ -160,6 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
+  foward: 0
   whiskers: {fileID: 5618052798967931120}
 --- !u!50 &5618052799771884341
 Rigidbody2D:
