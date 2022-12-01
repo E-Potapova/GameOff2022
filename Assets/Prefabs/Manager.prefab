@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7242346271650910736
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7242346271650910737}
+  - component: {fileID: 7242346271650910738}
+  - component: {fileID: 7242346271650910739}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7242346271650910737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7242346271650910736}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.9984288, y: 3.0014179, z: -28.625122}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7242346271650910738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7242346271650910736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a966c06f341909488a2c4d5872a07ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelTexture: {fileID: 2800000, guid: 37694178a4c5da744a519a83b9515645, type: 3}
+  levelRenderer: {fileID: 0}
+  pixelsPerUnit: 64
+  posOffset: 0.015625
+  spawnTransform: {fileID: 0}
+  spawnPosition: {x: 0, y: 0, z: 0}
+  goalTransform: {fileID: 0}
+  goalposition: {x: 0, y: 0, z: 0}
+  currCat: {fileID: 0}
+  buildColor: {r: 0.43529415, g: 0.27450982, b: 0.23137257, a: 1}
+  pauseMenu: {fileID: 4563935753413010737, guid: 04ae590050ca7584abbb2957a8656911, type: 3}
+--- !u!114 &7242346271650910739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7242346271650910736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f0486aa1e872c44c8902897954748cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxCats: 3
+  catsSafe: 0
+  catsSpawned: 0
+  deadCatsCount: 0
+  maxDeadCats: 2
+  catPrefab: {fileID: 6314602453322243922, guid: b2a6a44d48b055d459e5c1ff60bb3721, type: 3}
+  interval: 2
+  spawnBuffer: 10
+  catBuildersUp: 5
+  catBuildersFoward: 5
+  catDigDown: 5
+  catDigFoward: 5
+  catUmbrella: 5
+  catStopper: 5
+  winLoseScreen: {fileID: 4563935753413010737, guid: 04ae590050ca7584abbb2957a8656911, type: 3}

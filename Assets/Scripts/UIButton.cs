@@ -30,7 +30,7 @@ public class UIButton : MonoBehaviour
         {
             counterText.text = (counter).ToString();
         }
-        if (counter < 1)
+        if (button.interactable && counter < 1)
         {
             button.interactable = false;
             UIManager.singleton.PressAbilityButton(this); // Deselect button

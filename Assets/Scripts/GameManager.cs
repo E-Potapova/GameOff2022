@@ -227,8 +227,8 @@ public class GameManager : MonoBehaviour
     
     //makes the end goal an area instead of singular node
     public void SetupGoalPositions(){
-        for(int x = -1; x < 1; x++){
-            for(int y =-2; y < 8; y++){
+        for(int x = -8; x < 8; x++){
+            for(int y =-10; y < 10; y++){
                 int targetX = goalNode.x + x;
                 int targetY = goalNode.y + y;
 
