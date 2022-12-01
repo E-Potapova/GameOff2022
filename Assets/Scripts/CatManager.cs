@@ -26,8 +26,6 @@ public class CatManager : MonoBehaviour
     float timer;
     public float spawnBuffer = 10;
     float spawnBufferTime = 0;
-
-    public bool beginGame = false;
     #endregion
 
     #region Ability counter
@@ -147,8 +145,7 @@ public class CatManager : MonoBehaviour
         catsSpawned++; //keep track of how many cats have been spawned
 
         //play sound
-        //FindObjectOfType<AudioManager>().Play("Meow 1");
-        AudioManager.instance.Play("Meow 1");
+        AudioManager.instance.PlayRandMeow();
     }
 
     //find the cat closest to the mouse

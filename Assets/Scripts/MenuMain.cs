@@ -15,6 +15,9 @@ public class MenuMain : MonoBehaviour
     {
         Debug.Log("Load First Level");
         LevelLoader.LoadNextLevel();
+
+        //instatiate new obj
+        //controls screen
     }
 
     // Update is called once per frame
@@ -31,6 +34,6 @@ public class MenuMain : MonoBehaviour
             animator = GameObject.Find("Logo").GetComponent<Animator>();
         }
         animator.SetTrigger("click");
-        AudioManager.instance.Play("Meow 1");
+        AudioManager.instance.PlayRandMeow();
     }
 }

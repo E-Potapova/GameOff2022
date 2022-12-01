@@ -8,6 +8,10 @@ public class AudioManager : MonoBehaviour
 {
 
     public Sound[] sounds;
+
+    public Sound[] meows;
+
+    public Sound[] purrs;
     
     //singleton
     public static AudioManager instance;
@@ -32,6 +36,23 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.loop = s.loop;
         }
+
+        foreach(Sound s in meows){
+            s.source = gameObject.AddComponent<AudioSource>();
+            s.source.clip = s.clip;
+
+            s.source.volume = s.volume;
+            s.source.loop = s.loop;
+        }
+
+        foreach(Sound s in purrs){
+            s.source = gameObject.AddComponent<AudioSource>();
+            s.source.clip = s.clip;
+
+            s.source.volume = s.volume;
+            s.source.loop = s.loop;
+        }
+
     }
 
     //used in my temp start menu
@@ -47,14 +68,31 @@ public class AudioManager : MonoBehaviour
             Debug.Log("Sound: " + name + " not found:(");
             return;
         }
-
-        //this should mute audio
-        // if(PauseMenu.isPaused){
-        //     s.source.Pause();
-        // }
-        // else{
-        //     s.source.Play();   
-        // }
         s.source.Play();  
     }
+
+    public void PlayRandMeow(){
+        int val = UnityEngine.Random.Range(0, meows.Length-1);
+        Debug.Log(val);
+        Sound meow = meows[val];
+
+        if(meow.source == null){
+            Debug.Log("Sound: " + meow.name + " not found:(");
+            return;
+        }
+        meow.source.PlayOneShot(meow.clip, meow.volume);
+        //meow.source.Play();
+    }
+
+    public void PlayRandPurr(){
+        int val = UnityEngine.Random.Range(0, purrs.Length) -1;
+        Sound purr = purrs[val];
+        if(purr ==null){
+            Debug.Log("Sound: " + val + " not found:(");
+            return;
+        }
+        purr.source.PlayOneShot(purr.clip, purr.volume);
+    }
+
+
 }
