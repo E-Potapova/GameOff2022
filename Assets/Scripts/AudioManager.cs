@@ -34,8 +34,9 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    //used in my temp start menu
     void Start(){
-        Play("MenuMusic");
+        Play("BackgroundMusic");
     }
 
     // Update is called once per frame
@@ -46,6 +47,14 @@ public class AudioManager : MonoBehaviour
             Debug.Log("Sound: " + name + " not found:(");
             return;
         }
-        s.source.Play();
+
+        //this should mute audio
+        // if(PauseMenu.isPaused){
+        //     s.source.Pause();
+        // }
+        // else{
+        //     s.source.Play();   
+        // }
+        s.source.Play();  
     }
 }
