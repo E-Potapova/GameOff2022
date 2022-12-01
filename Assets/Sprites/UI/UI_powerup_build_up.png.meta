@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1e699341b209f2d4182beeb0c33473d7
+guid: 2e5e09d55f1c8ae45b5c1509dd16a131
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -129,7 +129,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_powerup_build_0
+      name: UI_powerup_build_up_0
       rect:
         serializedVersion: 2
         x: 0
@@ -143,14 +143,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b171131724547a4084395338d5d2012
-      internalID: -551429528
+      spriteID: 177be94146eca664299fed1ffe0ba7a6
+      internalID: -712088124
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_powerup_build_1
+      name: UI_powerup_build_up_1
       rect:
         serializedVersion: 2
         x: 64
@@ -164,14 +164,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4e94ceace252de542a140b6c6f73301f
-      internalID: 1780807526
+      spriteID: b865e66621666314a8c4b03f277e3660
+      internalID: -2121416283
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_powerup_build_2
+      name: UI_powerup_build_up_2
       rect:
         serializedVersion: 2
         x: 128
@@ -185,8 +185,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 374d1f5c2e2530048ac642700c962734
-      internalID: -1945252091
+      spriteID: 52384bde0fad2974b842096a2873dcdb
+      internalID: 2043983068
       vertices: []
       indices: 
       edges: []
@@ -202,9 +202,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      UI_powerup_build_0: -551429528
-      UI_powerup_build_1: 1780807526
-      UI_powerup_build_2: -1945252091
+      UI_powerup_build_up_2: 2043983068
+      UI_powerup_build_up_0: -712088124
+      UI_powerup_build_up_1: -2121416283
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
