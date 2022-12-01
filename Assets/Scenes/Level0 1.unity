@@ -200,7 +200,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 101920131}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.109, y: 2.62, z: -0.5}
+  m_LocalPosition: {x: 3.109, y: 3.65, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -576,7 +576,7 @@ MonoBehaviour:
   maxDeadCats: 2
   catPrefab: {fileID: 6314602453322243922, guid: b2a6a44d48b055d459e5c1ff60bb3721, type: 3}
   interval: 2
-  spawnBuffer: 10
+  spawnBuffer: 5
   beginGame: 0
   catBuildersUp: 5
   catBuildersFoward: 5
@@ -1642,10 +1642,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9126183414475990854, guid: 6517b770044660a418f0aba336f967c5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9126183414475990855, guid: 6517b770044660a418f0aba336f967c5, type: 3}
-      propertyPath: sounds.Array.data[1].volume
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

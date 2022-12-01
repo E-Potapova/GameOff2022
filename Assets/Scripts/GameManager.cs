@@ -48,6 +48,10 @@ public class GameManager : MonoBehaviour
 
     UIManager uiManager;
 
+    public GameObject pauseMenu;
+    bool isPaused = false;
+    
+
     //make GameManger singleton, restricts class to only one instance
     public static GameManager singleton;
     
@@ -73,6 +77,9 @@ public class GameManager : MonoBehaviour
         goalNode = GetNodeFromWorldPos(goalTransform.position);
         goalposition = GetWorldPosFromNode(goalNode);
         SetupGoalPositions();
+
+        //play music here
+
     }
 
     // Initializes map grid to hold each pixel(Node) of the map sprite
@@ -108,6 +115,14 @@ public class GameManager : MonoBehaviour
         GetMousePosition();
         if (Input.GetMouseButton(0)) // primary button (left click)
             uiManager.HandleMouseClick();
+            
+        if(Input.GetKeyDown(KeyCode.Escape) && !isPaused){
+            Instantiate(pauseMenu);//create object 
+            isPaused = true;
+        }
+        else if(Input.GetKeyDown(KeyCode.Escape)){
+            isPaused = false;
+        }
         CheckForCat();
         uiManager.Tick();
         HandleCat();

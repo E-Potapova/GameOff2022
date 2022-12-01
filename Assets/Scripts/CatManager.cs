@@ -24,16 +24,20 @@ public class CatManager : MonoBehaviour
     float delta;
     public float interval =2;
     float timer;
+    public float spawnBuffer = 5;
+    float spawnBufferTime = 0;
+
+    public bool beginGame = false;
     #endregion
 
     #region Ability counter
     //when player runs out of that ability just disable the button...
-    public int catBuildersUp =0;
-    public int catBuildersFoward = 0;
-    public int catDigDown = 0;
-    public int catDigFoward = 0;
-    public int catUmbrella = 0;
-    public int catStopper = 0;
+    public int catBuildersUp =5;
+    public int catBuildersFoward = 5;
+    public int catDigDown = 5;
+    public int catDigFoward = 5;
+    public int catUmbrella = 5;
+    public int catStopper = 5;
     #endregion
 
     //win game condition
@@ -57,61 +61,62 @@ public class CatManager : MonoBehaviour
     void Update() {
         //increase time passed
         delta = Time.deltaTime;
-
+        spawnBufferTime += delta;
         //keep spawning cats at set time intervals until all cats are spawned
-        if (catsSpawned < maxCats) {
-            timer -= delta;
-            if(timer < 0){
-                //create new unit
-                timer = interval;
-                SpawnCat();
+        if(spawnBuffer < spawnBufferTime){
+            if (catsSpawned < maxCats) {
+                timer -= delta;
+                if(timer < 0){
+                    //create new unit
+                    timer = interval;
+                    SpawnCat();
+                }
+            }
+
+            //adding new stuff for removing units
+            safeCats.Clear();
+            deadCats.Clear();
+
+            //go through all cats and check if they made it to the goal, or are dead
+            for(int i = 0; i < catList.Count; i++){
+                if(catList[i].isSafe){
+                    safeCats.Add(catList[i]);
+                    continue;
+                }
+                else if(catList[i].isDead){
+                    deadCats.Add(catList[i]);
+                    continue;
+                }
+                catList[i].Tick(delta);
+            }
+
+            //if cat is in the goal remove it from list of spawned cats
+            for(int i = 0; i < safeCats.Count; i++){
+                if(catList.Contains(safeCats[i])){
+                    catList.Remove(safeCats[i]);
+                    catsSafe++; //keep track of cats that made it to the goal
+                }
+            }
+
+            //if enough cats made it to goal you win!!
+            if(catsSafe == catsSpawned && !win){
+                win = true;
+                Debug.Log("You Win!");
+            }
+            
+            for(int i =0; i< deadCats.Count; i++){
+                if(catList.Contains(deadCats[i])){
+                    catList.Remove(deadCats[i]);
+                    deadCatsCount++;
+                }
+            }
+
+            //if too many cats died you lose
+            if(deadCatsCount >= maxDeadCats && !lose){
+                lose = true;
+                Debug.Log("You Lose");
             }
         }
-
-        //adding new stuff for removing units
-        safeCats.Clear();
-        deadCats.Clear();
-
-        //go through all cats and check if they made it to the goal, or are dead
-        for(int i = 0; i < catList.Count; i++){
-            if(catList[i].isSafe){
-                safeCats.Add(catList[i]);
-                continue;
-            }
-            else if(catList[i].isDead){
-                deadCats.Add(catList[i]);
-                continue;
-            }
-            catList[i].Tick(delta);
-        }
-
-        //if cat is in the goal remove it from list of spawned cats
-        for(int i = 0; i < safeCats.Count; i++){
-            if(catList.Contains(safeCats[i])){
-                catList.Remove(safeCats[i]);
-                catsSafe++; //keep track of cats that made it to the goal
-            }
-        }
-
-        //if enough cats made it to goal you win!!
-        if(catsSafe == catsSpawned && !win){
-            win = true;
-            Debug.Log("You Win!");
-        }
-        
-        for(int i =0; i< deadCats.Count; i++){
-            if(catList.Contains(deadCats[i])){
-                catList.Remove(deadCats[i]);
-                deadCatsCount++;
-            }
-        }
-
-        //if too many cats died you lose
-        if(deadCatsCount >= maxDeadCats && !lose){
-            lose = true;
-            Debug.Log("You Lose");
-        }
-
     }
 
     //this spawns cats at the spawn point, hence the name
