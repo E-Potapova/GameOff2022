@@ -26,16 +26,19 @@ public class MenuPause : MonoBehaviour
 
     public void Retry()
     {
+        Time.timeScale = 1;
         LevelLoader.Reload();
     }
 
     public void NextLevel()
     {
+        Time.timeScale = 1;
         LevelLoader.LoadNextLevel();
     }
 
     public void Quit()
     {
+        Time.timeScale = 1;
         LevelLoader.LoadMainMenu();
     }
 
